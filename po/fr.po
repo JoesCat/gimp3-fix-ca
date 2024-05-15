@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp-fix-ca\n"
-"Report-Msgid-Bugs-To: https://github.com/JoesCat/gimp-fix-ca/issues\n"
-"POT-Creation-Date: 2024-02-17 17:24-0800\n"
+"Report-Msgid-Bugs-To: https://github.com/JoesCat/gimp3-fix-ca/issues\n"
+"POT-Creation-Date: 2024-05-12 16:27-0700\n"
 "PO-Revision-Date: 2024-02-19 21:00-0800\n"
 "Last-Translator: Jose Da Silva <digital@joescat.com>\n"
 "Language-Team: \n"
@@ -17,99 +17,246 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../fix-ca.c:159
+#: ../fix-ca.c:198
+#, fuzzy
+msgid "Chromatic Aberration..."
+msgstr "Aberration Chromatique..."
+
+#: ../fix-ca.c:199
+msgid "<Image>/Filters/Colors"
+msgstr "<Image>/Filters/Couleur"
+
+#: ../fix-ca.c:201
+#, fuzzy
+msgid "Fix Chromatic Aberration"
+msgstr "Aberration Chromatique"
+
+#: ../fix-ca.c:202
+#, fuzzy
 msgid ""
-"Fix chromatic aberration caused by imperfect lens.  It works by shifting red "
-"and blue components of image pixels in the specified amounts."
+"Fix Chromatic Aberration caused by optical lens (eg: analog cameras, "
+"adapters).This plugin works by shifting red and bluepixels in the specified "
+"amounts."
 msgstr ""
 "Corrige l'aberration chromatique causée par un objectif imparfait. Il "
 "fonctionne en décalant les composants rouges et bleus des pixels de l'image "
 "dans les quantités spécifiées."
 
-#: ../fix-ca.c:166 ../fix-ca.c:372
+#: ../fix-ca.c:212
+#, fuzzy
+msgid "_Blue-L"
+msgstr "_Bleue-L"
+
+#: ../fix-ca.c:212
+msgid "Blue amount (lateral)"
+msgstr "Mouvement bleue (latéral)"
+
+#: ../fix-ca.c:215
+#, fuzzy
+msgid "_Red-L"
+msgstr "_Rouge-L"
+
+#: ../fix-ca.c:215
+msgid "Red amount (lateral)"
+msgstr "Mouvement rouge (latéral)"
+
+#: ../fix-ca.c:218
+#, fuzzy
+msgid "Lens_X"
+msgstr "Lentille_X"
+
+#: ../fix-ca.c:218
+msgid "Lens center X (lateral)"
+msgstr "Centre de la lentille X (latéral)"
+
+#: ../fix-ca.c:221
+#, fuzzy
+msgid "Lens_Y"
+msgstr "Lentille_Y"
+
+#: ../fix-ca.c:221
+msgid "Lens center Y (lateral)"
+msgstr "Centre de la lentille Y (latéral)"
+
+#: ../fix-ca.c:224
+#, fuzzy
+msgid "_Interpolation"
+msgstr "_Interpolation"
+
+#: ../fix-ca.c:225
+msgid "Interpolation 0=None/1=Linear/2=Cubic"
+msgstr "Interpolation 0=Aucune/1=Linéaire/2=Cubique"
+
+#: ../fix-ca.c:228
+msgid "B_lue-X"
+msgstr "B_leue-X"
+
+#: ../fix-ca.c:228
+msgid "Blue amount, X axis (directional)"
+msgstr "Quantité de bleue, axe X (directionnel)"
+
+#: ../fix-ca.c:231
+msgid "R_ed-X"
+msgstr "R_ouge-X"
+
+#: ../fix-ca.c:231
+msgid "Red amount, X axis (directional)"
+msgstr "Quantité de rouge, axe X (directionnel)"
+
+#: ../fix-ca.c:234
+msgid "Bl_ue-Y"
+msgstr "Bl_eue-Y"
+
+#: ../fix-ca.c:234
+msgid "Blue amount, Y axis (directional)"
+msgstr "Quantité de bleue, axe Y (directionnel)"
+
+#: ../fix-ca.c:237
+msgid "Re_d-Y"
+msgstr "Ro_uge-Y"
+
+#: ../fix-ca.c:237
+msgid "Red amount, Y axis (directional)"
+msgstr "Quantité de rouge, axe Y (directionnel)"
+
+#: ../fix-ca.c:274
+#, c-format
+msgid "Procedure '%s' only works with one drawable."
+msgstr "Procédure '%s' ne fonctionne qu'avec RGB ou RGBA."
+
+#: ../fix-ca.c:285
+#, c-format
+msgid "Procedure '%s' only works with RGB or RGBA."
+msgstr ""
+
+#: ../fix-ca.c:378
+#, c-format
+msgid "Procedure '%s' cannot use this color precision."
+msgstr "Procédure '%s' ne peut pas utiliser cette précision de couleur."
+
+#: ../fix-ca.c:401
+#, c-format
+msgid "Procedure '%s', not enough RAM."
+msgstr "Procédure '%s', pas assez de RAM."
+
+#: ../fix-ca.c:669 ../fix-ca.c:762
 msgid "Chromatic Aberration"
 msgstr "Aberration Chromatique"
 
-#: ../fix-ca.c:178
-msgid "<Image>/Filters/Colors"
-msgstr "<Image>/Filters/Couleur"
+#: ../fix-ca.c:679 ../fix-ca.c:803
+msgid "_None (Fastest)"
+msgstr "Aucu_n (Rapide)"
 
-#: ../fix-ca.c:314
-msgid "Invalid color type!"
-msgstr "Type de couleur invalide!"
+#: ../fix-ca.c:680 ../fix-ca.c:804
+msgid "L_inear"
+msgstr "L_inéaire"
 
-#: ../fix-ca.c:406
-msgid "Preview _saturation:"
-msgstr "Aperçu _saturation:"
+#: ../fix-ca.c:681 ../fix-ca.c:805
+msgid "_Cubic (Best)"
+msgstr "_Cubiques (Meilleur)"
 
-#: ../fix-ca.c:418
-msgid "None (Fastest)"
-msgstr "Aucun (Rapide)"
-
-#: ../fix-ca.c:419
-msgid "Linear"
-msgstr "Linéaire"
-
-#: ../fix-ca.c:420
-msgid "Cubic (Best)"
-msgstr "Cubiques (Meilleur)"
-
-#: ../fix-ca.c:428
-msgid "_Interpolation:"
-msgstr "_Interpolation:"
-
-#: ../fix-ca.c:435
+#: ../fix-ca.c:699 ../fix-ca.c:817
 msgid "Lateral"
 msgstr "Latérale"
 
-#: ../fix-ca.c:446
+#: ../fix-ca.c:719
+#, fuzzy
+msgid "Directional"
+msgstr "Directionnel"
+
+#: ../fix-ca.c:766
+msgid "_Cancel"
+msgstr "_Fermer"
+
+#: ../fix-ca.c:767
+msgid "_OK"
+msgstr "_OK"
+
+#: ../fix-ca.c:787
+#, fuzzy
+msgid "_Saturation:"
+msgstr "Sa_turation:"
+
+#: ../fix-ca.c:791
+msgid "Saturate colors in preview window to help you see overlaps"
+msgstr "Saturez les couleurs pour aider à voir les bords"
+
+#: ../fix-ca.c:809
+msgid "Method of how to move Blue and Red Pixels"
+msgstr "Méthode de déplacement des pixels bleus et rouges"
+
+#: ../fix-ca.c:819
+msgid "Do corrections for lens affected chromatic aberration"
+msgstr "Effectuer des corrections pour l'aberration chromatique affectée par la lentille optique"
+
+#: ../fix-ca.c:824
 msgid "_Blue:"
 msgstr "_Bleue:"
 
-#: ../fix-ca.c:459
+#: ../fix-ca.c:836
 msgid "_Red:"
 msgstr "_Rouge:"
 
-#: ../fix-ca.c:472
+#: ../fix-ca.c:848
 msgid "Lens_X:"
 msgstr "Lentille_X:"
 
-#: ../fix-ca.c:485
+#: ../fix-ca.c:860
 msgid "Lens_Y:"
 msgstr "Lentille_Y:"
 
-#: ../fix-ca.c:498
+#: ../fix-ca.c:872
 msgid "Directional, X axis"
 msgstr "Directionnel, axe X"
 
-#: ../fix-ca.c:509 ../fix-ca.c:545
-msgid "Blue:"
-msgstr "Bleue:"
+#: ../fix-ca.c:874
+msgid "Do flat directional corrections along the X axis"
+msgstr "Effectuer des corrections sur l'axe X"
 
-#: ../fix-ca.c:522 ../fix-ca.c:558
-msgid "Red:"
-msgstr "Rouge:"
+#: ../fix-ca.c:879
+#, fuzzy
+msgid "B_lue:"
+msgstr "B_leue:"
 
-#: ../fix-ca.c:534
+#: ../fix-ca.c:891
+msgid "R_ed:"
+msgstr "R_ouge:"
+
+#: ../fix-ca.c:903
 msgid "Directional, Y axis"
 msgstr "Directionnel, axe Y"
 
-#: ../fix-ca.c:981
+#: ../fix-ca.c:905
+msgid "Do flat directional corrections along the Y axis"
+msgstr "Effectuer des corrections sur l'axe Y"
+
+#: ../fix-ca.c:910
+msgid "Bl_ue:"
+msgstr "Bl_eue:"
+
+#: ../fix-ca.c:922
+msgid "Re_d:"
+msgstr "Ro_uge:"
+
+#: ../fix-ca.c:1186
 msgid "Shifting pixel components..."
 msgstr "Déplacement des pixels..."
 
-#: ../fix-ca.c:1310
+#: ../fix-ca.c:1514
+#, fuzzy
 msgid ""
-"The image to modify is in RGB format.  Color precision can be float, double, "
-"8, 16, 32, 64.  The green pixels are kept stationary, and you can shift the "
-"red and blue colors within a range of {-10..+10} pixels.\n"
+"The image to modify is in RGB format.  Color precision can be double, 8, 16, "
+"32 or 64.  The green pixels are kept stationary, and you can shift red and "
+"blue colors within a range of {-30..+30} pixels.\n"
 "\n"
 "Lateral Chromatic Aberration is due to camera lens(es) with no aberration at "
-"the lens center, and increasing gradually toward the edges of the image.\n"
+"the lens center, and increasing gradually toward the edges of the image. "
+"Digital cameras may correct for this in software, analog cameras, or "
+"adapters may show this in resulting photos or images.\n"
 "\n"
 "Directional X and Y axis aberrations are a flat amount of aberration due to "
 "image seen through something like glass, water, or another medium of "
-"different density.  You can shift pixels up/left {-10..+10} down/right.\n"
+"different density.  You can shift pixels up/left {-30..+30} down/right.\n"
 "\n"
 "Lateral aberration correction is applied first, since the lens(es) are "
 "closest to the film or image sensor, and directional corrections applied "
@@ -117,19 +264,21 @@ msgid ""
 msgstr ""
 "L'image à modifier est au format RVB. La précision des couleurs peut être "
 "flottante, double, 8, 16, 32, 64. Les pixels verts restent stationnaires et "
-"vous pouvez décaler les couleurs rouge et bleue dans une plage de {-10..+10} " "pixels.\n"
+"vous pouvez décaler les couleurs rouge et bleue dans une plage de {-30..+30} "
+"pixels.\n"
 "\n"
 "L'aberration chromatique latérale est due aux objectifs de l'appareil photo "
 "sans aberration au centre de l'objectif et augmentant progressivement vers "
-"les bords de l'image.\n"
+"les bords de l'image. Les appareils photo numériques peuvent corriger cela "
+"dans un logiciel, les appareils photo analogiques ou les adaptateurs peuvent "
+"l'afficher dans les photos ou images résultantes.\n"
 "\n"
 "Les aberrations directionnelles des axes X et Y sont une quantité plate "
 "d'aberration due à une image vue à travers quelque chose comme le verre, "
 "l'eau ou un autre milieu de densité différente. Vous pouvez déplacer les "
-"pixels vers le haut/gauche {-10..+10} vers le bas/droite.\n"
+"pixels vers le haut/gauche {-30..+30} vers le bas/droite.\n"
 "\n"
-"La correction des aberrations latérales est appliquée en premier, puisque "
-"le ou les objectif(s) sont les plus proches du film ou du capteur d'image, "
-"et les corrections directionnelles sont appliquées en dernier puisque "
-"celui-ci est le plus éloigné de l'appareil photo."
-
+"La correction des aberrations latérales est appliquée en premier, puisque le "
+"ou les objectif(s) sont les plus proches du film ou du capteur d'image, et "
+"les corrections directionnelles sont appliquées en dernier puisque celui-ci "
+"est le plus éloigné de l'appareil photo."

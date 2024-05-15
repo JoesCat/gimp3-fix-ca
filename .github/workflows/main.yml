@@ -8,11 +8,11 @@ jobs:
       matrix:
         choiceL: [--disable-silent-rules, --enable-silent-rules --enable-debugtime]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Create configure
         run: |
           sudo apt-get update -y
-          sudo apt-get install autoconf automake libtool gcc libgimp2.0-dev
+          sudo apt-get install autoconf automake libtool gcc libgimp-3.0-dev
           autoreconf -i
           automake
       - name: Choose configure
@@ -55,14 +55,14 @@ jobs:
         with:
           msystem: ${{ matrix.msystem }}
           update: true
-          install: autotools base-devel git ${{ matrix.toolchain }}-toolchain ${{ matrix.toolchain }}-gimp
+          install: autotools base-devel git ${{ matrix.toolchain }}-toolchain ${{ matrix.toolchain }}-gimp3
       - name: Create configure
         run: |
           autoreconf -i
           automake
       - name: run ./configure
         run: ./configure
-      - name: Make gimp-plugin-fix-ca
+      - name: Make gimp-fix-ca
         run: make
   local:
     runs-on: ubuntu-latest
@@ -71,8 +71,20 @@ jobs:
       - name: Create configure
         run: |
           sudo apt-get update -y
-          sudo apt-get install autoconf automake libtool gcc libgimp2.0-dev
+          sudo apt-get install autoconf automake libtool gcc libgimp-3.0-dev
       - name: Make local gimp-fix-ca install
-        run: gimptool-2.0 --install fix-ca.c
+        run: gimptool-2.99 --install fix-ca.c
       - name: Uninstall local gimp-fix-ca
-        run: gimptool-2.0 --uninstall-bin fix-ca
+        run: gimptool-2.99 --uninstall-bin fix-ca
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create configure
+        run: |
+          sudo port install gimp3-devel
+          sudo port install autoconf automake libtool gcc
+      - name: Make local gimp-fix-ca install
+        run: gimptool-2.99 --install fix-ca.c
+      - name: Uninstall local gimp-fix-ca
+        run: gimptool-2.99 --uninstall-bin fix-ca

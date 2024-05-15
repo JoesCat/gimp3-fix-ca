@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2023 Joe Da Silva <digital@joescat.com> -->
+<!-- Copyright 2024 Joe Da Silva <digital@joescat.com> -->
 <component type="addon">
-  <id>org.gimp.extension.fix-ca</id>
+  <id>org.gimp.extension.fix3-ca</id>
   <extends>org.gimp.GIMP</extends>
   <name>Fix Chromatic Aberration</name>
   <summary>[plug-in to correct Lateral or Directional Chromatic Aberration (CA)]</summary>
@@ -32,18 +32,16 @@
     imagem devido a luz viajando através de materiais densos, como vidro ou água.
     </p>
   </description>
-  <url type="homepage">https://github.com/JoesCat/gimp-fix-ca</url>
-  <url type="help">https://github.com/JoesCat/gimp-fix-ca#readme</url>
-  <url type="bugtracker">https://github.com/JoesCat/gimp-fix-ca/issues</url>
+  <url type="homepage">https://github.com/JoesCat/gimp3-fix-ca</url>
+  <url type="help">https://github.com/JoesCat/gimp3-fix-ca#readme</url>
+  <url type="bugtracker">https://github.com/JoesCat/gimp3-fix-ca/issues</url>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <releases>
-   <release version="4.0"   date="2024-02-24" />
-   <release version="3.0.4" date="2023-12-02" />
-   <release version="3.0.3" date="2022-10-09" />
+   <release version="0.0"   date="2024-05-15" />
   </releases>
   <requires>
-   <id version="2.10" compare="ge">org.gimp.GIMP</id>
+   <id version="2.99.19" compare="ge">org.gimp.GIMP</id>
   </requires>
   <metadata>
    <value key="GIMP::plug-in-path">fix-ca</value>
