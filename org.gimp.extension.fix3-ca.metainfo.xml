@@ -8,9 +8,9 @@
   <description>
     <p xml:lang="C">
     This extension helps the user correct Lateral Chromatic Aberration (CA) due
-    to different color wavelengths travelling through a lens, or Directional CA,
+    to different color wavelengths traveling through a lens, or Directional CA,
     where the amount of CA is assumed to be the same throughout the image due to
-    light travelling through dense material such as glass or water.
+    light traveling through dense material such as glass or water.
     </p>
     <p xml:lang="es">
     Esta extensión ayuda a corregir la aberración cromática lateral (CA) debido
@@ -30,6 +30,12 @@
     para diferentes comprimentos de onda de cores viajando através de uma lente,
     ou CA direcional, onde a quantidade de CA é considerada a mesma em toda a
     imagem devido a luz viajando através de materiais densos, como vidro ou água.
+    </p>
+    <p xml:lang="sv">
+    Denna insticksmodul hjälper användaren korrigera lateral kromatisk aberration
+    (CA) orsakad av att färger av olika våglängd passerar genom en lins, eller
+    direktionell CA där mängden CA antas vara densamma i hela bilden på grund av
+    att ljus passerar genom material såsom glas eller vatten.
     </p>
   </description>
   <url type="homepage">https://github.com/JoesCat/gimp3-fix-ca</url>

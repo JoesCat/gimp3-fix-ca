@@ -1,31 +1,33 @@
 #
 # spec file for package gimp3-fix-ca plugin
 #
-%define         moname    gimp30-fix-ca
-%define         plugindir %{_libdir}/gimp/3.0/plug-ins/fix-ca
+%define		moname gimp30-fix-ca
+%define		plugindir %{_libdir}/gimp/3.0/plug-ins/fix-ca
 
 Name:		@FIX_CA_PACKAGE_NAME@
 Version:	@FIX_CA_VERSION@
 Release:	0
 Summary:	A Gimp3 plugin for correcting Chromatic Aberration (CA)
 License:	GPLv3+
-Group:		Graphics/Editors and Converters
+Group:		Productivity/Graphics/Bitmap Editors
 URL:		https://github.com/JoesCat/gimp3-fix-ca
-Source0:	https://github.com/JoesCat/gimp3-fix-ca/releases/download/%{version}/%{name}-%{version}.tar.gz
+Source0:	https://github.com/JoesCat/gimp3-fix-ca/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gcc
 BuildRequires:	make
-BuildRequires:  gettext-devel
-BuildRequires:  gtk+3-devel
-BuildRequires:  pkgconfig(gimp-3.0)
+BuildRequires:	gettext-devel
+BuildRequires:	pkgconfig(gtk+-3.0)
+BuildRequires:	pkgconfig(gimp3)
+
+Requires:	gimp3
 
 
 %description
-A Gimp3 plug-in to correct Chromatic Aberration (CA).
-GIMP3-Fix-CA can fix Lateral CA caused due to light travelling through lenses,
-and fix Directional CA due to light travelling through dense material
+A GIMP3 plug-in to correct Chromatic Aberration (CA).
+GIMP3-Fix-CA can fix Lateral CA caused due to light traveling through lenses,
+and fix Directional CA due to light traveling through dense material
 such as glass or water.
 
 
@@ -33,8 +35,7 @@ such as glass or water.
 %setup -q
 
 %build
-autoreconf -i
-automake --add-missing
+autoreconf --force --install --verbose
 %configure
 %make_build
 
@@ -48,6 +49,6 @@ automake --add-missing
 %files -f %{moname}.lang
 %license COPYING
 %{plugindir}/fix-ca
-%{_datarootdir}/metainfo/org.gimp.extension.fix3-ca.metainfo.xml
+%{_datadir}/metainfo/org.gimp.extension.fix3-ca.metainfo.xml
 
 %changelog

@@ -29,7 +29,6 @@
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
-
 #ifdef GDK_WINDOWING_QUARTZ
 #import <Cocoa/Cocoa.h>
 #elif defined (G_OS_WIN32)
@@ -56,11 +55,8 @@
 #endif
 
 #define PLUG_IN_PROC	"plug-in-fix-ca"
-#define PLUG_IN_ROLE	"gimp-fix-ca"
+#define PLUG_IN_ROLE	"gimp3-fix-ca"
 #define PLUG_IN_BINARY	"fix-ca"
-
-#define PROCEDURE_NAME	"Fix-CA"
-#define DATA_KEY_VALS	"fix_ca"
 
 /* For fixca() row buffer management */
 #define SOURCE_ROWS	120
@@ -198,42 +194,54 @@ fixca_create_procedure (GimpPlugIn *plug_in,
     gimp_procedure_set_documentation (procedure,
     /* menu entry tooltip blurb */    _("Fix Chromatic Aberration"),
     /* help for script developers */  _("Fix Chromatic Aberration caused by "
-                                      "optical lens (eg: analog cameras, adapters)."
-                                      "This plugin works by shifting red and blue"                                     "pixels in the specified amounts."),
+                                      "optical lens (eg: analog cameras, adapters). "
+                                      "This plugin works by shifting red and blue "                                     "pixels in the specified amounts."),
     /* help ID */                     PLUG_IN_PROC);
     gimp_procedure_set_attribution (procedure,
     /* author(s) original, GIMP3 */ "Kriang Lerdsuwanakij, Jose Da Silva",
     /* copyright */                 "GPL3+",
     /* date made */                 "2024");
 
-    GIMP_PROC_ARG_DOUBLE (procedure, "bluel",
-                          _("_Blue-L"), _("Blue amount (lateral)"),
-                          -INPUT_MXF, INPUT_MXF, 0.0, G_PARAM_READWRITE);
-    GIMP_PROC_ARG_DOUBLE (procedure, "redl",
-                          _("_Red-L"), _("Red amount (lateral)"),
-                          -INPUT_MXF, INPUT_MXF, 0.0, G_PARAM_READWRITE);
-    GIMP_PROC_ARG_INT (procedure, "lensx",
-                       _("Lens_X"), _("Lens center X (lateral)"),
-                       -1, GIMP_MAX_IMAGE_SIZE-1, -1, G_PARAM_READWRITE);
-    GIMP_PROC_ARG_INT (procedure, "lensy",
-                       _("Lens_Y"), _("Lens center Y (lateral)"),
-                       -1, GIMP_MAX_IMAGE_SIZE-1, -1, G_PARAM_READWRITE);
-    GIMP_PROC_ARG_INT (procedure, "interpolation",
-                       _("_Interpolation"),
-                       _("Interpolation 0=None/1=Linear/2=Cubic"),
-                       0, 2, 1, G_PARAM_READWRITE);
-    GIMP_PROC_ARG_DOUBLE (procedure, "bluex",
-                          _("B_lue-X"), _("Blue amount, X axis (directional)"),
-                          -INPUT_MAX, INPUT_MAX, 0.0, G_PARAM_READWRITE);
-    GIMP_PROC_ARG_DOUBLE (procedure, "redx",
-                          _("R_ed-X"), _("Red amount, X axis (directional)"),
-                          -INPUT_MAX, INPUT_MAX, 0.0, G_PARAM_READWRITE);
-    GIMP_PROC_ARG_DOUBLE (procedure, "bluey",
-                          _("Bl_ue-Y"), _("Blue amount, Y axis (directional)"),
-                          -INPUT_MAX, INPUT_MAX, 0.0, G_PARAM_READWRITE);
-    GIMP_PROC_ARG_DOUBLE (procedure, "redy",
-                          _("Re_d-Y"), _("Red amount, Y axis (directional)"),
-                          -INPUT_MAX, INPUT_MAX, 0.0, G_PARAM_READWRITE);
+    gimp_procedure_add_double_argument (procedure, "bluel",
+                                        _("_Blue-L"), _("Blue amount (lateral)"),
+                                        -INPUT_MXF, INPUT_MXF, 0.0,
+                                        G_PARAM_READWRITE);
+    gimp_procedure_add_double_argument (procedure, "redl",
+                                        _("_Red-L"), _("Red amount (lateral)"),
+                                        -INPUT_MXF, INPUT_MXF, 0.0,
+                                        G_PARAM_READWRITE);
+    gimp_procedure_add_int_argument (procedure, "lensx",
+                                     _("Lens_X"), _("Lens center X (lateral)"),
+                                     -1, GIMP_MAX_IMAGE_SIZE-1, -1,
+                                     G_PARAM_READWRITE);
+    gimp_procedure_add_int_argument (procedure, "lensy",
+                                     _("Lens_Y"), _("Lens center Y (lateral)"),
+                                     -1, GIMP_MAX_IMAGE_SIZE-1, -1,
+                                     G_PARAM_READWRITE);
+    gimp_procedure_add_int_argument (procedure, "interpolation",
+                                     _("_Interpolation"),
+                                     _("Interpolation 0=None/1=Linear/2=Cubic"),
+                                     0, 2, 1, G_PARAM_READWRITE);
+    gimp_procedure_add_double_argument (procedure, "bluex",
+                                        _("B_lue-X"),
+                                        _("Blue amount, X axis (directional)"),
+                                        -INPUT_MAX, INPUT_MAX, 0.0,
+                                        G_PARAM_READWRITE);
+    gimp_procedure_add_double_argument (procedure, "redx",
+                                        _("R_ed-X"),
+                                        _("Red amount, X axis (directional)"),
+                                        -INPUT_MAX, INPUT_MAX, 0.0,
+                                        G_PARAM_READWRITE);
+    gimp_procedure_add_double_argument (procedure, "bluey",
+                                        _("Bl_ue-Y"),
+                                        _("Blue amount, Y axis (directional)"),
+                                        -INPUT_MAX, INPUT_MAX, 0.0,
+                                        G_PARAM_READWRITE);
+    gimp_procedure_add_double_argument (procedure, "redy",
+                                        _("Re_d-Y"),
+                                        _("Red amount, Y axis (directional)"),
+                                        -INPUT_MAX, INPUT_MAX, 0.0,
+                                        G_PARAM_READWRITE);
   }
 
   return procedure;
@@ -382,9 +390,9 @@ fixca_run (GimpProcedure       *procedure,
   }
 #ifdef DEBUG_TIME
   printf("Xsize=%d Ysize=%d, ",
-	 fix_ca_params.Xsize, fix_ca_params.Ysize);
+         fix_ca_params.Xsize, fix_ca_params.Ysize);
   printf("bytes per pixel=%d, bytes per color=%d\n",
-	 fix_ca_params.bpp, fix_ca_params.bpc);
+         fix_ca_params.bpp, fix_ca_params.bpc);
 #endif
 
   /* prepare to draw, or preview, fetch values and image */
@@ -392,7 +400,7 @@ fixca_run (GimpProcedure       *procedure,
   fix_ca_params.srcImg  = g_new (guchar, sizeImg);
   fix_ca_params.destImg = g_new (guchar, sizeImg);
   if (fix_ca_params.srcImg == NULL || fix_ca_params.destImg == NULL) {
-    /* TODO: REDO gimp-fix-ca to work with super-large-pics */
+    /* TODO: REDO gimp3-fix-ca to work with super-large-images */
     if (fix_ca_params.destImg != NULL) g_free(fix_ca_params.destImg);
     if (fix_ca_params.srcImg  != NULL) g_free(fix_ca_params.srcImg);
     g_set_error (&error, GIMP_PLUG_IN_ERROR, 0,
@@ -422,7 +430,7 @@ fixca_run (GimpProcedure       *procedure,
       gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height)) {
 
 #ifdef DEBUG_TIME
-    double	sec;
+    double sec;
     struct timeval tv1, tv2;
     gettimeofday (&tv1, NULL);
 
@@ -747,6 +755,7 @@ fixca_dialog (GimpProcedure       *procedure,
   //g_object_unref (fixcaparams);
 
 #else
+  // this is similar to GIMP2, v2.10 code
   GtkWidget *dialog;
   GtkWidget *main_vbox;
   GtkWidget *combo;
@@ -1081,18 +1090,18 @@ saturate(guchar *dest, gint width,
          gint bpp, gint bpc, gdouble s_scale)
 {
   GimpRGB rgb;
-  GimpHSV hsv;
+  GimpHSL hsl;
   gint	  b = absolute (bpc);
   dest += b;	/* point to green before looping */
   while (width-- > 0) {
     rgb.r = get_pixel (dest-b, bpc);
     rgb.g = get_pixel (dest  , bpc);
     rgb.b = get_pixel (dest+b, bpc);
-    gimp_rgb_to_hsv (&rgb, &hsv);
-    hsv.s *= s_scale;
-    if (hsv.s > 1.0)
-      hsv.s = 1.0;
-    gimp_hsv_to_rgb (&hsv, &rgb);
+    gimp_rgb_to_hsl (&rgb, &hsl);
+    hsl.s *= s_scale;
+    if (hsl.s > 1.0)
+      hsl.s = 1.0;
+    gimp_hsl_to_rgb (&hsl, &rgb);
     set_pixel (dest-b, rgb.r, bpc);
     set_pixel (dest  , rgb.g, bpc);
     set_pixel (dest+b, rgb.b, bpc);

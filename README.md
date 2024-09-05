@@ -5,8 +5,8 @@
 GIMP3-Fix-CA is a [GIMP](http://www.gimp.org/) plug-in to correct Chromatic Aberration
 (CA). For a general explanation about Chromatic Aberration, you can find information
 from [Wikipedia](http://en.wikipedia.org/wiki/Chromatic_aberration).
-GIMP3-Fix-CA can fix Lateral CA colored fringing caused by light travelling through
-lenses, and Directional CA caused by light travelling through dense material such as
+GIMP3-Fix-CA can fix Lateral CA colored fringing caused by light traveling through
+lenses, and Directional CA caused by light traveling through dense material such as
 glass or water.
 
 GIMP2-Fix-CA was written by Kriang Lerdsuwanakij lerdsuwa@users.sourceforge.net, and
@@ -177,7 +177,7 @@ The picture below shows (50% zoom) corrected image of the interested region.
 ## Download and building GIMP3-Fix-CA
 
 Fortunately, everything is in just one file. Just get the C source file.
-To compile and install the plug-in, you need the development library 
+To compile and install the plug-in, you need the development library
 for Gimp.  Usually it's in gimp-devel package in your distribution.
 Use the command
 ```sh
@@ -195,9 +195,9 @@ instead. (use the Installation method below for other OSes).  Type
 ```
 for further help.
 
-If Gimp is already running in your system, exit and restart Gimp for the new
+If GIMP3 is already running in your system, exit and restart Gimp for the new
 plug-in to be detected. The following displays GIMP3-Fix-CA information from
-the GIMP menu.
+the GIMP3 menu.
 
 ![](img-fix-ca/plug-in-browser.png)
 
