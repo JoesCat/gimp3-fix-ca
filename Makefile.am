@@ -1,6 +1,6 @@
 # Makefile.am - Top level automakefile for fix-ca
 
-SUBDIRS = . po
+SUBDIRS = . po tests
 
 # The braces around ACLOCAL_FLAGS below instead of parentheses are intentional!
 # Otherwise autoreconf misparses the line.

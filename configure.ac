@@ -3,7 +3,7 @@ dnl Process this file with "autoreconf -i;automake" to produce a configure scrip
 
 # Copyright (C) 2024 by Joe Da Silva
 
-AC_PREREQ([2.71])
+AC_PREREQ([2.69])
 #--------------------------------------------------------------------------
 # Setup variables before running AC_INIT
 #
@@ -51,11 +51,14 @@ AC_PROG_CC
 AC_PROG_SED
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
+AC_PATH_PROG([CHMOD],[chmod],[:])
+AC_CHECK_PROGS([GIMP],[gimp-3.0 gimp-2.99],[:])
 AC_CHECK_PROGS([GIMPTOOL],[gimptool-3.0 gimptool-2.99],[:])
-AC_PATH_PROG([STRIP],[strip],[:])
+AC_PATH_PROG([MD5SUM],[md5sum],[:])
 AC_PATH_PROG([MSGFMT],[msgfmt],[:])
 AC_PATH_PROG([MSGINIT],[msginit],[:])
 AC_PATH_PROG([MSGMERGE],[msgmerge],[:])
+AC_PATH_PROG([STRIP],[strip],[:])
 AC_PATH_PROG([XGETTEXT],[xgettext],[:])
 AM_CONFIG_HEADER(fix-ca-config.h)
 AC_PROG_INSTALL
@@ -241,6 +244,7 @@ AH_BOTTOM([
 AC_CONFIG_FILES([
 Makefile
 po/Makefile
+tests/Makefile
 rpm/gimp3-fix-ca.spec
 ])
 AC_OUTPUT

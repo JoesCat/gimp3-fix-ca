@@ -19,9 +19,11 @@ BuildRequires:	gcc
 BuildRequires:	make
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(gtk+-3.0)
-BuildRequires:	pkgconfig(gimp3)
+#BuildRequires:	pkgconfig(gimp3)
+#BuildRequires:	pkgconfig(gimp3-devel)
+#BuildRequires:	pkgconfig(gimp3-libs)
 
-Requires:	gimp3
+#Requires:	gimp3
 
 
 %description
@@ -38,6 +40,9 @@ such as glass or water.
 autoreconf --force --install --verbose
 %configure
 %make_build
+
+%check
+make check
 
 
 %install

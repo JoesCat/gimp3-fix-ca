@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp-fix-ca\n"
 "Report-Msgid-Bugs-To: https://github.com/JoesCat/gimp3-fix-ca/issues\n"
-"POT-Creation-Date: 2024-05-12 16:27-0700\n"
+"POT-Creation-Date: 2024-09-04 20:25-0700\n"
 "PO-Revision-Date: 2024-02-17 17:24-0800\n"
 "Last-Translator: Jose Da Silva <digital@joescat.com>\n"
 "Language-Team: \n"
@@ -17,231 +17,246 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../fix-ca.c:198
+#: ../fix-ca.c:201
 #, fuzzy
 msgid "Chromatic Aberration..."
 msgstr "Aberração Cromática..."
 
-#: ../fix-ca.c:199
+#: ../fix-ca.c:202
 msgid "<Image>/Filters/Colors"
 msgstr "<Image>/Filters/Cors"
 
-#: ../fix-ca.c:201
+#: ../fix-ca.c:204
 #, fuzzy
 msgid "Fix Chromatic Aberration"
 msgstr "Aberração Cromática"
 
-#: ../fix-ca.c:202
+#: ../fix-ca.c:205
 #, fuzzy
 msgid ""
 "Fix Chromatic Aberration caused by optical lens (eg: analog cameras, "
-"adapters).This plugin works by shifting red and bluepixels in the specified "
-"amounts."
+"adapters). This plugin works by shifting red and blue pixels in the "
+"specified amounts."
 msgstr ""
 "Corrija a aberração cromática causada por lentes imperfeitas. Funciona "
 "movendo pixels vermelhos e azuis na imagem."
 
-#: ../fix-ca.c:212
+#: ../fix-ca.c:215
 #, fuzzy
 msgid "_Blue-L"
 msgstr "_Azul-L"
 
-#: ../fix-ca.c:212
+#: ../fix-ca.c:215
 msgid "Blue amount (lateral)"
 msgstr "Movimento azul (lateral)"
 
-#: ../fix-ca.c:215
+#: ../fix-ca.c:219
 #, fuzzy
 msgid "_Red-L"
 msgstr "_Vermelho-L"
 
-#: ../fix-ca.c:215
+#: ../fix-ca.c:219
 msgid "Red amount (lateral)"
 msgstr "Movimento vermelho (lateral)"
 
-#: ../fix-ca.c:218
+#: ../fix-ca.c:223
 #, fuzzy
 msgid "Lens_X"
 msgstr "Lente_X"
 
-#: ../fix-ca.c:218
+#: ../fix-ca.c:223
 msgid "Lens center X (lateral)"
 msgstr "Centro da lente X (lateral)"
 
-#: ../fix-ca.c:221
+#: ../fix-ca.c:227
 #, fuzzy
 msgid "Lens_Y"
 msgstr "Lente_Y"
 
-#: ../fix-ca.c:221
+#: ../fix-ca.c:227
 msgid "Lens center Y (lateral)"
 msgstr "Centro da lente Y (lateral)"
 
-#: ../fix-ca.c:224
+#: ../fix-ca.c:231
 #, fuzzy
 msgid "_Interpolation"
 msgstr "_Interpolação"
 
-#: ../fix-ca.c:225
+#: ../fix-ca.c:232
 msgid "Interpolation 0=None/1=Linear/2=Cubic"
 msgstr "Interpolação 0=Nenhum/1=Linear/2=Cúbico"
 
-#: ../fix-ca.c:228
+#: ../fix-ca.c:235
 msgid "B_lue-X"
 msgstr "A_zul-X"
 
-#: ../fix-ca.c:228
+#: ../fix-ca.c:236
 msgid "Blue amount, X axis (directional)"
 msgstr "Quantidade de azul, eixo X (direcional)"
 
-#: ../fix-ca.c:231
+#: ../fix-ca.c:240
 msgid "R_ed-X"
 msgstr "V_ermelho-X"
 
-#: ../fix-ca.c:231
+#: ../fix-ca.c:241
 msgid "Red amount, X axis (directional)"
 msgstr "Quantidade de vermelho, eixo X (direcional)"
 
-#: ../fix-ca.c:234
+#: ../fix-ca.c:245
 msgid "Bl_ue-Y"
 msgstr "Az_ul-Y"
 
-#: ../fix-ca.c:234
+#: ../fix-ca.c:246
 msgid "Blue amount, Y axis (directional)"
 msgstr "Quantidade de azul, eixo Y (direcional)"
 
-#: ../fix-ca.c:237
+#: ../fix-ca.c:250
 msgid "Re_d-Y"
 msgstr "Ve_rmelho-Y"
 
-#: ../fix-ca.c:237
+#: ../fix-ca.c:251
 msgid "Red amount, Y axis (directional)"
 msgstr "Quantidade de vermelho, eixo Y (direcional)"
 
-#: ../fix-ca.c:274
+#: ../fix-ca.c:291
 #, c-format
 msgid "Procedure '%s' only works with one drawable."
 msgstr "Procedimento '%s' só funciona com um drawable."
 
-#: ../fix-ca.c:285
+#: ../fix-ca.c:302
 #, c-format
 msgid "Procedure '%s' only works with RGB or RGBA."
 msgstr "Procedimento '%s' só funciona com RGB ou RGBA."
 
-#: ../fix-ca.c:378
+#: ../fix-ca.c:395
 #, c-format
 msgid "Procedure '%s' cannot use this color precision."
 msgstr "Procedimento '%s' não pode usar esta precisão de cor."
 
-#: ../fix-ca.c:401
+#: ../fix-ca.c:418
 #, c-format
 msgid "Procedure '%s', not enough RAM."
 msgstr "Procedimento '%s', RAM insuficiente."
 
-#: ../fix-ca.c:669 ../fix-ca.c:762
+#: ../fix-ca.c:686 ../fix-ca.c:780
 msgid "Chromatic Aberration"
 msgstr "Aberração Cromática"
 
-#: ../fix-ca.c:679 ../fix-ca.c:803
-msgid "_None (Fastest)"
+#: ../fix-ca.c:696
+#, fuzzy
+msgid "None (Fastest)"
 msgstr "_Nenhum (Rápido)"
 
-#: ../fix-ca.c:680 ../fix-ca.c:804
-msgid "L_inear"
+#: ../fix-ca.c:697
+#, fuzzy
+msgid "Linear"
 msgstr "L_inear"
 
-#: ../fix-ca.c:681 ../fix-ca.c:805
-msgid "_Cubic (Best)"
+#: ../fix-ca.c:698
+#, fuzzy
+msgid "Cubic (Best)"
 msgstr "_Cúbico (Melhor)"
 
-#: ../fix-ca.c:699 ../fix-ca.c:817
+#: ../fix-ca.c:716 ../fix-ca.c:835
 msgid "Lateral"
 msgstr "Lateral"
 
-#: ../fix-ca.c:719
+#: ../fix-ca.c:736
 #, fuzzy
 msgid "Directional"
 msgstr "Direcional"
 
-#: ../fix-ca.c:766
+#: ../fix-ca.c:784
 msgid "_Cancel"
 msgstr "_Fechar"
 
-#: ../fix-ca.c:767
+#: ../fix-ca.c:785
 msgid "_OK"
 msgstr "_OK"
 
-#: ../fix-ca.c:787
+#: ../fix-ca.c:805
 #, fuzzy
 msgid "_Saturation:"
 msgstr "_Saturação:"
 
-#: ../fix-ca.c:791
+#: ../fix-ca.c:809
 msgid "Saturate colors in preview window to help you see overlaps"
 msgstr "Sature as cores para ajudá-lo a ver as bordas"
 
-#: ../fix-ca.c:809
+#: ../fix-ca.c:821
+msgid "_None (Fastest)"
+msgstr "_Nenhum (Rápido)"
+
+#: ../fix-ca.c:822
+msgid "L_inear"
+msgstr "L_inear"
+
+#: ../fix-ca.c:823
+msgid "_Cubic (Best)"
+msgstr "_Cúbico (Melhor)"
+
+#: ../fix-ca.c:827
 msgid "Method of how to move Blue and Red Pixels"
 msgstr "Método de mover pixels azuis e vermelhos"
 
-#: ../fix-ca.c:819
+#: ../fix-ca.c:837
 msgid "Do corrections for lens affected chromatic aberration"
 msgstr "Faça correções para a aberração cromática afetada pela lente"
 
-#: ../fix-ca.c:824
+#: ../fix-ca.c:842
 msgid "_Blue:"
 msgstr "_Azul:"
 
-#: ../fix-ca.c:836
+#: ../fix-ca.c:854
 msgid "_Red:"
 msgstr "_Vermelho:"
 
-#: ../fix-ca.c:848
+#: ../fix-ca.c:866
 msgid "Lens_X:"
 msgstr "Lente_X:"
 
-#: ../fix-ca.c:860
+#: ../fix-ca.c:878
 msgid "Lens_Y:"
 msgstr "Lente_Y:"
 
-#: ../fix-ca.c:872
+#: ../fix-ca.c:890
 msgid "Directional, X axis"
 msgstr "Direcional, eixo X"
 
-#: ../fix-ca.c:874
+#: ../fix-ca.c:892
 msgid "Do flat directional corrections along the X axis"
 msgstr "Faça correções direcionais no eixo X"
 
-#: ../fix-ca.c:879
+#: ../fix-ca.c:897
 #, fuzzy
 msgid "B_lue:"
 msgstr "A_zul:"
 
-#: ../fix-ca.c:891
+#: ../fix-ca.c:909
 msgid "R_ed:"
 msgstr "V_ermelho:"
 
-#: ../fix-ca.c:903
+#: ../fix-ca.c:921
 msgid "Directional, Y axis"
 msgstr "Direcional, eixo Y"
 
-#: ../fix-ca.c:905
+#: ../fix-ca.c:923
 msgid "Do flat directional corrections along the Y axis"
 msgstr "Faça correções direcionais no eixo Y"
 
-#: ../fix-ca.c:910
+#: ../fix-ca.c:928
 msgid "Bl_ue:"
 msgstr "Az_ul:"
 
-#: ../fix-ca.c:922
+#: ../fix-ca.c:940
 msgid "Re_d:"
 msgstr "Ve_rmelho:"
 
-#: ../fix-ca.c:1186
+#: ../fix-ca.c:1204
 msgid "Shifting pixel components..."
 msgstr "Mudando pixels de cor..."
 
-#: ../fix-ca.c:1514
+#: ../fix-ca.c:1532
 #, fuzzy
 msgid ""
 "The image to modify is in RGB format.  Color precision can be double, 8, 16, "
@@ -261,15 +276,14 @@ msgid ""
 "closest to the film or image sensor, and directional corrections applied "
 "last since this is the furthest away from the camera."
 msgstr ""
-"A imagem a modificar está no formato RGB. A precisão da cor pode ser "
-"dupla, 8, 16, 32, 64. Os pixels verdes são mantidos estacionários "
-"e você pode mudar as cores vermelha e azul dentro de um intervalo de {-30.."
-"+30} pixels.\n"
+"A imagem a modificar está no formato RGB. A precisão da cor pode ser dupla, "
+"8, 16, 32, 64. Os pixels verdes são mantidos estacionários e você pode mudar "
+"as cores vermelha e azul dentro de um intervalo de {-30..+30} pixels.\n"
 "\n"
 "A Aberração Cromática Lateral é devida a lentes de câmera sem aberração no "
-"centro da lente e aumentando gradualmente em direção às bordas da imagem. "
-"As câmeras digitais podem corrigir isso no software, as câmeras analógicas "
-"ou os adaptadores podem mostrar isso nas fotos ou imagens resultantes.\n"
+"centro da lente e aumentando gradualmente em direção às bordas da imagem. As "
+"câmeras digitais podem corrigir isso no software, as câmeras analógicas ou "
+"os adaptadores podem mostrar isso nas fotos ou imagens resultantes.\n"
 "\n"
 "As aberrações direcionais dos eixos X e Y são uma quantidade fixa de "
 "aberração devido à imagem vista através de algo como vidro, água ou outro "

@@ -35,6 +35,17 @@
 #include <windows.h>
 #endif
 
+#ifdef TEST_FIX_CA
+#define PLUG_IN_PROC	"test-plug-in-fix-ca"
+#define PLUG_IN_ROLE	"test-fix-ca"
+#define PLUG_IN_BINARY	"test-fix-ca"
+/* No i18n for now */
+#define _(x) x
+#define N_(x) x
+#else
+#define PLUG_IN_PROC	"plug-in-fix-ca"
+#define PLUG_IN_ROLE	"gimp3-fix-ca"
+#define PLUG_IN_BINARY	"fix-ca"
 #ifdef HAVE_GETTEXT
 #include <libintl.h>
 #define _(String) gettext (String)
@@ -48,15 +59,12 @@
 #define _(x) x
 #define N_(x) x
 #endif
+#endif
 
 #ifdef DEBUG_TIME
 # include <sys/time.h>
 # include <stdio.h>
 #endif
-
-#define PLUG_IN_PROC	"plug-in-fix-ca"
-#define PLUG_IN_ROLE	"gimp3-fix-ca"
-#define PLUG_IN_BINARY	"fix-ca"
 
 /* For fixca() row buffer management */
 #define SOURCE_ROWS	120
@@ -126,7 +134,7 @@ static void             fixca_region           (FixCaParams         *params,
                                                 gint                 x2,
                                                 gint                 y1,
                                                 gint                 y2,
-                                                gboolean             show_progress);
+                                                gint                 show_progress);
 
 static void             fixca_help             (const gchar         *help_id,
                                                 gpointer             help_data);
@@ -178,7 +186,7 @@ fixca_create_procedure (GimpPlugIn *plug_in,
     gimp_procedure_set_image_types (procedure, "RGB*");
     gimp_procedure_set_sensitivity_mask (procedure,
                                          GIMP_PROCEDURE_SENSITIVE_DRAWABLE);
-
+#ifndef TEST_FIX_CA
 #ifdef HAVE_GETTEXT
     /* Initialize i18n support */
     setlocale (LC_ALL, "");
@@ -187,6 +195,7 @@ fixca_create_procedure (GimpPlugIn *plug_in,
     bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #endif
     textdomain (GETTEXT_PACKAGE);
+#endif
 #endif
 
     gimp_procedure_set_menu_label (procedure, _("Chromatic Aberration..."));
@@ -265,6 +274,7 @@ fixca_run (GimpProcedure       *procedure,
   GError            *error = NULL;
   gint               x, y, width, height, sizeImg;
 
+#ifndef TEST_FIX_CA
 #ifdef HAVE_GETTEXT
   /* Initialize i18n support */
   setlocale(LC_ALL, "");
@@ -273,6 +283,7 @@ fixca_run (GimpProcedure       *procedure,
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
 #endif
   textdomain(GETTEXT_PACKAGE);
+#endif
 #endif
 
   if (n_drawables != 1) {
@@ -440,7 +451,8 @@ fixca_run (GimpProcedure       *procedure,
     shadow = gimp_drawable_get_shadow_buffer(drawable);
 
     /* adjust pixel regions from srcImg to destImg, according to params */
-    fixca_region (&fix_ca_params, x, (x+width), y, (y+height), TRUE);
+    fixca_region (&fix_ca_params, x, (x+width), y, (y+height),
+                  ((run_mode == GIMP_RUN_NONINTERACTIVE)? -1:1));
 
 #ifdef DEBUG_TIME
     printf ("finished doing fixca_region\n");
@@ -612,7 +624,7 @@ preview_update (GtkWidget *widget, GObject *config)
           params->blueY, params->redY);
 #endif
 
-  fixca_region (params, 0, params->Xsize, y, (y + height), FALSE);
+  fixca_region (params, 0, params->Xsize, y, (y + height), 0);
 
   buffer = g_new (guchar, width * height * params->bpp);
   b = absolute (params->bpc);
@@ -1166,7 +1178,7 @@ centerline(guchar *dest, gint width, gint bpp, gint bpc,
 static void
 fixca_region (FixCaParams *params,
               gint x1, gint x2, gint y1, gint y2,
-              gboolean show_progress)
+              gint show_progress)
 {
   guchar *srcPTR = params->srcImg;
   guchar *src[SOURCE_ROWS];
@@ -1189,7 +1201,7 @@ fixca_region (FixCaParams *params,
   gettimeofday (&tv1, NULL);
 #endif
 
-  if (show_progress)
+  if (show_progress > 0)
     gimp_progress_init(_("Shifting pixel components..."));
 
   /* Allocate buffers for reading, writing */
@@ -1487,7 +1499,7 @@ fixca_region (FixCaParams *params,
       }
     }
 
-    if (!show_progress) {
+    if (show_progress == 0) {
       if (params->saturation != 0.0)
         saturate (dest, x2-x1, bytes, bpc, 1+params->saturation/100);
 
@@ -1496,11 +1508,11 @@ fixca_region (FixCaParams *params,
 
     set_data (dest, params, x1, y, (x2-x1));
 
-    if (show_progress && ((y-y1) % 8 == 0))
+    if (show_progress > 0 && ((y-y1) % 8 == 0))
       gimp_progress_update ((gdouble) (y-y1)/(y2-y1));
   }
 
-  if (show_progress)
+  if (show_progress > 0)
     gimp_progress_update (0.0);
 
   for (i = 0; i < SOURCE_ROWS; ++i)
