@@ -176,24 +176,31 @@ The picture below shows (50% zoom) corrected image of the interested region.
 
 ## Download and building GIMP3-Fix-CA
 
-Fortunately, everything is in just one file. Just get the C source file.
-To compile and install the plug-in, you need the development library
-for Gimp.  Usually it's in gimp-devel package in your distribution.
-Use the command
+To compile and install this plug-in, you will need the GIMP development package
+that comes with your distribution (this needs to be 2.99.19^20240912 or later).
+Then run these commands in the main directory for this project:
 ```sh
-        gimptool-3.0 --install fix-ca.c
+  autoreconf -i
+  automake
+  ./configure --prefix=/usr
+  make
 ```
-will automatically compile and install into the local plug-in directory
-of your home account.  For Windows users, if you wish to make the plug-in
-available to all users of the machine, use
+You can also run 'make check' if you want, but note it takes about a minute to
+process since it loads and runs `gimp-2.99 -i` without display.
+
+At this point, the binary fix-ca is ready to install.
+For a single user, or someone without administration/root priviledges, you can
+install fix-ca into your local home directory as:
 ```sh
-        gimptool-3.0 --install-admin fix-ca.c
+  gimptool-2.99 --install-bin fix-ca
 ```
-instead. (use the Installation method below for other OSes).  Type
+or if you have administrative/root access, you can install fix-ca for everyone
+to use as:
 ```sh
-        gimptool-3.0 --help
+  sudo make install
 ```
-for further help.
+which then installs fix-ca in /usr/lib64/gimp/2.99/plug-ins/fix-ca/
+and the locale files into /usr/share/locale/??/LC_MESSAGES/gimp30-fix-ca.mo
 
 If GIMP3 is already running in your system, exit and restart Gimp for the new
 plug-in to be detected. The following displays GIMP3-Fix-CA information from
@@ -206,50 +213,22 @@ the GIMP3 menu.
 Developers and Distro installers will be more interested in this install method.
 This method also includes local language support (for included languages).
 
-Installing from Git master requires 2 preparatory steps:
-
-First, you need to create the ./configure script if you do not have it yet
 ```sh
-autoreconf -i  (or use 'autoreconf --install --force' for some setups)
-automake --foreign -Wall
+  autoreconf -i  (or use 'autoreconf --install --force' for some setups)
+  automake --foreign -Wall
+  ./configure --prefix=/usr
+  make
+  make check
+  sudo make install
 ```
-
-Second, you then use the usual steps to compile the plug-in.
-Various operating systems and setups will need ./configure options set.
-Here are example install steps for Linux, FreeBSD, Win32/64 are shown below:
-
-Installing on Linux
-```sh
-./configure
-make
-sudo make install
-```
-
-Installing on FreeBSD
-```sh
-./configure --prefix=$(pwd)/BUILD
-make
-make install
-```
-
-Installing on Windows 32-bit
-```sh
-./configure --host=i686-w64-mingw32 --prefix=$(pwd)/build-w32
-make
-make install
-```
-
-Installing on Windows 64-bit
-```sh
-./configure --host=x86_64-w64-mingw32 --prefix=$(pwd)/build-w64
-make
-make install
-```
+NOTE: At this time `make check` can be run manually on the terminal, but is not
+ready to run yet in scripts that have no display, such as rpm spec files or debian
+build files. Gimp is still in release candidate mode and bugs are getting fixed.
 
 ## Version History
 
 GIMP3-Fix-CA
-- 0.0 (May 15, 2024) Pre-release (GIMP3 >= 2.99.19).
+- 0.0 (May 15, 2024) Pre-release (GIMP3 >= 2.99.19^20240515). Version 0.1 will happen only after gimp-3.0 is released and the API is stable.
 
 GIMP2-Fix-CA
 - 4.0 (February 29, 2024) Upgraded code to use GIMP-2.10 API. Now Gimp-Fix-CA works with RGB/RGBA with precisions of 8bit, 16bit, 32bit, or double for each color of R,G,B,A. Also added Lens X/Y center and a lens centerline in the preview window. Local Language support now included for the installable Gimp-Fix-CA. This version is bumped to 4.0 since it requires GIMP-2.10.xx, and also because non-interactive scripting also requires Lateral Lens X/Y positions (default=-1,-1)
