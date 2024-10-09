@@ -3,6 +3,7 @@ AM_CFLAGS = ${CFLAGS} ${CPPFLAGS} ${GIMP_CFLAGS} ${GTK_CFLAGS} ${WCFLAGS} ${FCA_
 AM_CPPFLAGS = -I${top_srcdir} -I${top_builddir} ${GIMP_CFLAGS} -I${includedir}
 
 EXTRA_DIST = test-fix-ca.c test1.md5
+nodist_EXTRA_DATA = .deps .libs
 
 noinst_PROGRAMS     = test-fix-ca
 test_fix_ca_name    = test-fix-ca

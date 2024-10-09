@@ -8,7 +8,7 @@ jobs:
       matrix:
         choiceL: [--disable-silent-rules, --enable-silent-rules, --enable-debugtime]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Create configure
         run: |
           sudo apt-get update -y
@@ -55,7 +55,7 @@ jobs:
         with:
           msystem: ${{ matrix.msystem }}
           update: true
-          install: autotools base-devel git ${{ matrix.toolchain }}-toolchain ${{ matrix.toolchain }}-gimp3
+          install: autotools base-devel git ${{ matrix.toolchain }}-toolchain ${{ matrix.toolchain }}-gimp3 ${{ matrix.toolchain }}-gettext-tools
       - name: Create configure
         run: |
           autoreconf -i
@@ -67,7 +67,7 @@ jobs:
   local:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Create configure
         run: |
           sudo apt-get update -y
@@ -79,7 +79,7 @@ jobs:
   macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Create configure
         run: |
           sudo port install gimp3-devel

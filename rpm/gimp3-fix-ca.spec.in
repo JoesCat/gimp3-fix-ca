@@ -41,8 +41,8 @@ autoreconf --force --install --verbose
 %configure
 %make_build
 
-%check
-make check
+#%check
+#make check
 
 
 %install

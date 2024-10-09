@@ -31,7 +31,7 @@ EXTRA_DIST = README.md fix-ca-config.h.in rpm/gimp3-fix-ca.spec.in		\
 	img-fix-ca/ex-bran.jpg img-fix-ca/ex-bran-fix.jpg			\
 	img-fix-ca/fix-ca-center.jpg img-fix-ca/full-branches.jpg		\
 	img-fix-ca/poorman-zoom.jpg org.gimp.extension.fix3-ca.metainfo.xml
-nodist_EXTRA_DATA = .git .github
+nodist_EXTRA_DATA = .git .github .deps .libs
 DISTCHECK_CONFIGURE_FLAGS = --disable-silent-rules --enable-debugtime
 
 strip:

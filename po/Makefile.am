@@ -14,7 +14,7 @@ PO_FILES = es.po fr.po pt.po
 .PHONY: all install install-user uninstall uninstall-user clean $(LANGUAGES)
 .PHONY: update-po update-pot
 
-all: $(LANGUAGES)
+all: update-pot $(LANGUAGES)
 
 $(LANGUAGES):
 	if [[ -e $(srcdir)/$@.po ]]; \
