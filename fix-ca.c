@@ -120,7 +120,6 @@ static GimpProcedure  * fixca_create_procedure (GimpPlugIn          *plug_in,
 static GimpValueArray * fixca_run              (GimpProcedure       *procedure,
                                                 GimpRunMode          run_mode,
                                                 GimpImage           *image,
-                                                gint                 n_drawables,
                                                 GimpDrawable       **drawables,
                                                 GimpProcedureConfig *proc_config,
                                                 gpointer             run_data);
@@ -260,7 +259,6 @@ static GimpValueArray *
 fixca_run (GimpProcedure       *procedure,
            GimpRunMode          run_mode,
            GimpImage           *image,
-           gint                 n_drawables,
            GimpDrawable       **drawables,
            GimpProcedureConfig *proc_config,
            gpointer             run_data)
@@ -286,7 +284,7 @@ fixca_run (GimpProcedure       *procedure,
 #endif
 #endif
 
-  if (n_drawables != 1) {
+  if (gimp_core_object_array_get_length ((GObject **) drawables) != 1) {
     g_set_error (&error, GIMP_PLUG_IN_ERROR, 0,
                  _("Procedure '%s' only works with one drawable."),
                  gimp_procedure_get_name (procedure));
@@ -1086,7 +1084,7 @@ static gdouble cubicY(guchar *yrow, gint bpp, gint bpc, gdouble dx,
   return d;
 }
 
-static void cubicX(guchar *dest, gint bpp, gint bpc, gdouble dy,
+static void cubicX(guchar *dest, gint bpc, gdouble dy,
                    gdouble ym1, gdouble y, gdouble yp1, gdouble yp2)
 {
   /* Catmull-Rom from Gimp gimpdrawable-transform.c */
@@ -1101,22 +1099,22 @@ static void
 saturate(guchar *dest, gint width,
          gint bpp, gint bpc, gdouble s_scale)
 {
-  GimpRGB rgb;
-  GimpHSL hsl;
-  gint	  b = absolute (bpc);
-  dest += b;	/* point to green before looping */
+  gdouble r, g, b;
+  gdouble h, s, v;
+  gint	  c = absolute (bpc);
+  dest += c;	/* point to green before looping */
   while (width-- > 0) {
-    rgb.r = get_pixel (dest-b, bpc);
-    rgb.g = get_pixel (dest  , bpc);
-    rgb.b = get_pixel (dest+b, bpc);
-    gimp_rgb_to_hsl (&rgb, &hsl);
-    hsl.s *= s_scale;
-    if (hsl.s > 1.0)
-      hsl.s = 1.0;
-    gimp_hsl_to_rgb (&hsl, &rgb);
-    set_pixel (dest-b, rgb.r, bpc);
-    set_pixel (dest  , rgb.g, bpc);
-    set_pixel (dest+b, rgb.b, bpc);
+    r = get_pixel (dest-c, bpc);
+    g = get_pixel (dest  , bpc);
+    b = get_pixel (dest+c, bpc);
+    gtk_rgb_to_hsv (r, g, b, &h, &s, &v);
+    s *= s_scale;
+    if (s > 1.0)
+      s = 1.0;
+    gtk_hsv_to_rgb (h, s, v, &r, &g, &b);
+    set_pixel (dest-c, r, bpc);
+    set_pixel (dest  , g, bpc);
+    set_pixel (dest+c, b, bpc);
     dest += bpp;
   }
 }
@@ -1485,7 +1483,7 @@ fixca_region (FixCaParams *params,
                      x_blue_1, x_blue_2, x_blue_3, x_blue_4);
         y4 = cubicY (ptr_blue_4+2*b, bytes, bpc, d_x_blue,
                      x_blue_1, x_blue_2, x_blue_3, x_blue_4);
-        cubicX ((dest+(x-x1)*bytes+2*b), bytes, bpc, d_y_blue, y1, y2, y3, y4);
+        cubicX ((dest+(x-x1)*bytes+2*b), bpc, d_y_blue, y1, y2, y3, y4);
 
         y1 = cubicY (ptr_red_1, bytes, bpc, d_x_red,
                      x_red_1, x_red_2, x_red_3, x_red_4);
@@ -1495,7 +1493,7 @@ fixca_region (FixCaParams *params,
                      x_red_1, x_red_2, x_red_3, x_red_4);
         y4 = cubicY (ptr_red_4, bytes, bpc, d_x_red,
                      x_red_1, x_red_2, x_red_3, x_red_4);
-        cubicX ((dest+(x-x1)*bytes), bytes, bpc, d_y_red, y1, y2, y3, y4);
+        cubicX ((dest+(x-x1)*bytes), bpc, d_y_red, y1, y2, y3, y4);
       }
     }
 

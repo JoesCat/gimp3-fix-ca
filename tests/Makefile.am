@@ -14,13 +14,12 @@ test_fix_ca_LDADD   = ${LIBS} ${GIMP_LIBS} ${GTK_LIBS} ${WSLIB} ${FCA_LIB}
 update-scm1:
 	echo "(define (test-fix-ca-scm)" > ${builddir}/test-fix-ca.scm; \
 	echo "  (let* (" >> ${builddir}/test-fix-ca.scm; \
-	echo "        (image (car (gimp-file-load RUN-NONINTERACTIVE \"${top_srcdir}/img-fix-ca/full-branches.jpg\")))" >> ${builddir}/test-fix-ca.scm; \
-	echo "        (drawable (car (gimp-image-get-active-layer image)))" >> ${builddir}/test-fix-ca.scm; \
-	echo "        (drawables (vector drawable))" >> ${builddir}/test-fix-ca.scm; \
+	echo "        (theImage (car (gimp-file-load RUN-NONINTERACTIVE \"${top_srcdir}/img-fix-ca/full-branches.jpg\")))" >> ${builddir}/test-fix-ca.scm; \
+	echo "        (drawables (car (gimp-image-get-selected-drawables theImage)))" >> ${builddir}/test-fix-ca.scm; \
 	echo "        )" >> ${builddir}/test-fix-ca.scm; \
-	echo "    (test-plug-in-fix-ca RUN-NONINTERACTIVE image 1 drawables 6.0 -2.4 658 1280 1 0 0 0 0)" >> ${builddir}/test-fix-ca.scm; \
-	echo "    (gimp-file-save RUN-NONINTERACTIVE image \"${builddir}/test1.bmp\" ())" >> ${builddir}/test-fix-ca.scm; \
-	echo "    (gimp-image-delete image)" >> ${builddir}/test-fix-ca.scm; \
+	echo "    (test-plug-in-fix-ca RUN-NONINTERACTIVE theImage drawables 6.0 -2.4 658 1280 1 0 0 0 0)" >> ${builddir}/test-fix-ca.scm; \
+	echo "    (gimp-file-save RUN-NONINTERACTIVE theImage \"${builddir}/test1.bmp\" ())" >> ${builddir}/test-fix-ca.scm; \
+	echo "    (gimp-image-delete theImage)" >> ${builddir}/test-fix-ca.scm; \
 	echo "  )" >> ${builddir}/test-fix-ca.scm; \
 	echo ")" >> ${builddir}/test-fix-ca.scm; \
 	echo "" >> ${builddir}/test-fix-ca.scm; \
