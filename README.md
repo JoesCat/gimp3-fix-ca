@@ -176,9 +176,8 @@ The picture below shows (50% zoom) corrected image of the interested region.
 
 ## Download and building GIMP3-Fix-CA
 
-To compile and install this plug-in, you will need the GIMP development package
-that comes with your distribution (this needs to be 2.99.19^20240912 or later).
-Then run these commands in the main directory for this project:
+To compile and install this plug-in, you will need the GIMP3 RC1 version or
+later. Then run these commands in the main directory for this project:
 ```sh
   autoreconf -i
   automake
@@ -186,20 +185,20 @@ Then run these commands in the main directory for this project:
   make
 ```
 You can also run 'make check' if you want, but note it takes about a minute to
-process since it loads and runs `gimp-2.99 -i` without display.
+process since it loads and runs `gimp-3.0 -i` without a display.
 
 At this point, the binary fix-ca is ready to install.
 For a single user, or someone without administration/root priviledges, you can
 install fix-ca into your local home directory as:
 ```sh
-  gimptool-2.99 --install-bin fix-ca
+  gimptool --install-bin fix-ca
 ```
 or if you have administrative/root access, you can install fix-ca for everyone
 to use as:
 ```sh
   sudo make install
 ```
-which then installs fix-ca in /usr/lib64/gimp/2.99/plug-ins/fix-ca/
+which then installs fix-ca as /usr/lib64/gimp/3.0/plug-ins/fix-ca/fix-ca
 and the locale files into /usr/share/locale/??/LC_MESSAGES/gimp30-fix-ca.mo
 
 If GIMP3 is already running in your system, exit and restart Gimp for the new
@@ -228,7 +227,8 @@ build files. Gimp is still in release candidate mode and bugs are getting fixed.
 ## Version History
 
 GIMP3-Fix-CA
-- 0.0 (May 15, 2024) Pre-release (GIMP3 >= 2.99.19^20240515). Version 0.1 will happen only after gimp-3.0 is released and the API is stable.
+- 0.1 (Nov 14, 2024) Ready for GIMP3-RC1 (Release Candidate 1 - Ready for larger audience, API expected to be stable).
+- 0.0 (May 15, 2024) Pre-release (GIMP3 >= 2.99.19^20240515 - API is not stable yet).
 
 GIMP2-Fix-CA
 - 4.0 (February 29, 2024) Upgraded code to use GIMP-2.10 API. Now Gimp-Fix-CA works with RGB/RGBA with precisions of 8bit, 16bit, 32bit, or double for each color of R,G,B,A. Also added Lens X/Y center and a lens centerline in the preview window. Local Language support now included for the installable Gimp-Fix-CA. This version is bumped to 4.0 since it requires GIMP-2.10.xx, and also because non-interactive scripting also requires Lateral Lens X/Y positions (default=-1,-1)

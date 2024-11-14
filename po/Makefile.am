@@ -54,8 +54,9 @@ uninstall-user:
 update-pot: $(GETTEXT_PACKAGE).pot
 
 $(GETTEXT_PACKAGE).pot:
-	$(XGETTEXT) -k_ -k_\" -d $(GETTEXT_PACKAGE) -o $@ \
+	$(XGETTEXT) -k_ -k_\" -kd_ -d $(GETTEXT_PACKAGE) -o $@ \
 	--package-version=$(FIX_CA_VERSION) --msgid-bugs-address=$(FIX_CA_EMAIL) \
 	../*.c
 
 EXTRA_DIST = $(PO_FILES) $(GETTEXT_PACKAGE).pot
+

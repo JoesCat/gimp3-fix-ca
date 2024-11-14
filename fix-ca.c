@@ -17,17 +17,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if __has_include("fix-ca-config.h")
-#include "fix-ca-config.h"
-#else
-#define FIX_CA_VERSION "fix-CA local"
-#endif
+#include <libgimp/gimp.h>
+#include <libgimp/gimpui.h>
 
 #include <string.h>
 #include <math.h>
-
-#include <libgimp/gimp.h>
-#include <libgimp/gimpui.h>
 
 #ifdef GDK_WINDOWING_QUARTZ
 #import <Cocoa/Cocoa.h>
@@ -35,20 +29,33 @@
 #include <windows.h>
 #endif
 
+#if __has_include("fix-ca-config.h")
+#include "fix-ca-config.h"
+#else
+#define FIX_CA_VERSION "fix-CA local"
+#endif
+
 #ifdef TEST_FIX_CA
-#define PLUG_IN_PROC	"test-plug-in-fix-ca"
+#define PLUG_IN_PROC	"plug-in-test-fix-ca"
 #define PLUG_IN_ROLE	"test-fix-ca"
 #define PLUG_IN_BINARY	"test-fix-ca"
 /* No i18n for now */
 #define _(x) x
+#define d_(x) x
 #define N_(x) x
+#ifndef DEBUG_TIME
+/* be verbose during 'make check' */
+#define DEBUG_TIME 1
+#endif
 #else
 #define PLUG_IN_PROC	"plug-in-fix-ca"
-#define PLUG_IN_ROLE	"gimp3-fix-ca"
+#define PLUG_IN_ROLE	"gimp-fix-ca"
 #define PLUG_IN_BINARY	"fix-ca"
 #ifdef HAVE_GETTEXT
 #include <libintl.h>
+#include <locale.h>
 #define _(String) gettext (String)
+#define d_(String) (String)
 #ifdef gettext_noop
 #    define N_(String) gettext_noop (String)
 #else
@@ -57,6 +64,7 @@
 #else
 /* No i18n for now */
 #define _(x) x
+#define d_(x) x
 #define N_(x) x
 #endif
 #endif
@@ -170,6 +178,30 @@ fixca_query_procedures (GimpPlugIn *plug_in)
   return g_list_append (NULL, g_strdup (PLUG_IN_PROC));
 }
 
+/* Only translate 'Colors', <Image>/Filters/ stays as-English */
+static const char *PLUG_IN_MENU_LOCATION = d_("<Image>/Filters/Colors");
+static const char *PLUG_IN_MENU_LABEL = d_("Chromatic Aberration...");
+static const char *PLUG_IN_SHORT_DESC = d_(
+  "Fix Chromatic Aberration by shifting red and blue pixels.");
+static const char *PLUG_IN_LONG_DESC = d_(
+  "Lateral Chromatic Aberration is due to camera lens(es) "
+  "with no aberration at the lens center, and increasing "
+  "gradually toward the edges of the image. Digital cameras "
+  "may correct for this in software, analog cameras, or "
+  "adapters may show this in resulting photos or images.\n\n"
+  "Directional X and Y axis aberrations are a flat amount "
+  "of aberration due to image seen through something like "
+  "glass, water, or another medium of different density.  "
+  "You can shift pixels up/left {-30..+30} down/right.\n\n"
+  "Lateral aberration correction is applied first, since "
+  "the lens(es) are closest to the film or image sensor, "
+  "and directional corrections applied last since this is "
+  "the furthest away from the camera.\n\n"
+  "The image to modify is in RGB format.  Color precision "
+  "can be double, 8, 16, 32 or 64.  The green pixels are "
+  "kept stationary, and you can shift red and blue colors "
+  "within a range of {-30..+30} pixels.");
+
 static GimpProcedure *
 fixca_create_procedure (GimpPlugIn *plug_in,
                         const gchar *name)
@@ -197,18 +229,16 @@ fixca_create_procedure (GimpPlugIn *plug_in,
 #endif
 #endif
 
-    gimp_procedure_set_menu_label (procedure, _("Chromatic Aberration..."));
-    gimp_procedure_add_menu_path (procedure, _("<Image>/Filters/Colors"));
+    gimp_procedure_set_menu_label (procedure, _(PLUG_IN_MENU_LABEL));
+    gimp_procedure_add_menu_path (procedure, _(PLUG_IN_MENU_LOCATION));
     gimp_procedure_set_documentation (procedure,
-    /* menu entry tooltip blurb */    _("Fix Chromatic Aberration"),
-    /* help for script developers */  _("Fix Chromatic Aberration caused by "
-                                      "optical lens (eg: analog cameras, adapters). "
-                                      "This plugin works by shifting red and blue "                                     "pixels in the specified amounts."),
+    /* menu entry tooltip blurb   */  _(PLUG_IN_SHORT_DESC),
+    /* help for script developers */  _(PLUG_IN_LONG_DESC),
     /* help ID */                     PLUG_IN_PROC);
     gimp_procedure_set_attribution (procedure,
-    /* author(s) original, GIMP3 */ "Kriang Lerdsuwanakij, Jose Da Silva",
-    /* copyright */                 "GPL3+",
-    /* date made */                 "2024");
+    /* author(s), original first */ "Kriang Lerdsuwanakij (2006..), Jose Da Silva (2022..)",
+    /* copyright license         */ "GPL3+",
+    /* date for the latest build */ "2024");
 
     gimp_procedure_add_double_argument (procedure, "bluel",
                                         _("_Blue-L"), _("Blue amount (lateral)"),
@@ -218,14 +248,14 @@ fixca_create_procedure (GimpPlugIn *plug_in,
                                         _("_Red-L"), _("Red amount (lateral)"),
                                         -INPUT_MXF, INPUT_MXF, 0.0,
                                         G_PARAM_READWRITE);
-    gimp_procedure_add_int_argument (procedure, "lensx",
-                                     _("Lens_X"), _("Lens center X (lateral)"),
-                                     -1, GIMP_MAX_IMAGE_SIZE-1, -1,
-                                     G_PARAM_READWRITE);
-    gimp_procedure_add_int_argument (procedure, "lensy",
-                                     _("Lens_Y"), _("Lens center Y (lateral)"),
-                                     -1, GIMP_MAX_IMAGE_SIZE-1, -1,
-                                     G_PARAM_READWRITE);
+    gimp_procedure_add_double_argument (procedure, "lensx",
+                                        _("Lens_X"), _("Lens center X (lateral)"),
+                                        -1.0, GIMP_MAX_IMAGE_SIZE-1, -1.0,
+                                        G_PARAM_READWRITE);
+    gimp_procedure_add_double_argument (procedure, "lensy",
+                                        _("Lens_Y"), _("Lens center Y (lateral)"),
+                                        -1.0, GIMP_MAX_IMAGE_SIZE-1, -1.0,
+                                        G_PARAM_READWRITE);
     gimp_procedure_add_int_argument (procedure, "interpolation",
                                      _("_Interpolation"),
                                      _("Interpolation 0=None/1=Linear/2=Cubic"),
@@ -284,7 +314,7 @@ fixca_run (GimpProcedure       *procedure,
 #endif
 #endif
 
-  if (gimp_core_object_array_get_length ((GObject **) drawables) != 1) {
+  if (gimp_core_object_array_get_length ((GObject **)(drawables)) != 1) {
     g_set_error (&error, GIMP_PLUG_IN_ERROR, 0,
                  _("Procedure '%s' only works with one drawable."),
                  gimp_procedure_get_name (procedure));
@@ -330,9 +360,14 @@ fixca_run (GimpProcedure       *procedure,
     fix_ca_params.redL  = -INPUT_MAX;
   if (fix_ca_params.redL  >  INPUT_MAX)
     fix_ca_params.redL  =  INPUT_MAX;
-  if (fix_ca_params.lensX < -1.0 || fix_ca_params.lensX >= fix_ca_params.Xsize)
+#ifdef DEBUG_TIME
+  printf("lensX=%g lensY=%g, Xsize=%d Ysize=%d\n",
+         fix_ca_params.lensX, fix_ca_params.lensY,
+         fix_ca_params.Xsize, fix_ca_params.Ysize);
+#endif
+  if (fix_ca_params.lensX < 0.0 || fix_ca_params.lensX > fix_ca_params.Xsize-1)
     fix_ca_params.lensX = -1.0;
-  if (fix_ca_params.lensY < -1.0 || fix_ca_params.lensY >= fix_ca_params.Ysize)
+  if (fix_ca_params.lensY < 0.0 || fix_ca_params.lensY > fix_ca_params.Ysize-1)
     fix_ca_params.lensY = -1.0;
   if (fix_ca_params.interpolation < 0 || fix_ca_params.interpolation > 2)
     fix_ca_params.interpolation = 0;
@@ -398,7 +433,8 @@ fixca_run (GimpProcedure       *procedure,
       }
   }
 #ifdef DEBUG_TIME
-  printf("Xsize=%d Ysize=%d, ",
+  printf("lensX=%g lensY=%g, Xsize=%d Ysize=%d, ",
+         fix_ca_params.lensX, fix_ca_params.lensY,
          fix_ca_params.Xsize, fix_ca_params.Ysize);
   printf("bytes per pixel=%d, bytes per color=%d\n",
          fix_ca_params.bpp, fix_ca_params.bpc);
@@ -429,9 +465,15 @@ fixca_run (GimpProcedure       *procedure,
                    GEGL_ABYSS_NONE);
 
   /* In interactive mode, display dialog to get 'config' variables. */
-  if (run_mode == GIMP_RUN_INTERACTIVE && \
-      ! fixca_dialog (procedure, G_OBJECT (proc_config), &fix_ca_params)) {
-    status = GIMP_PDB_CANCEL;
+  if (run_mode == GIMP_RUN_INTERACTIVE) {
+    /* Set lens center before running dialog */
+    fix_ca_params.lensX = round ((fix_ca_params.Xsize+0.5)/2);
+    fix_ca_params.lensY = round ((fix_ca_params.Ysize+0.5)/2);
+#ifdef DEBUG_TIME
+    printf("lensX=%g lensY=%g\n", fix_ca_params.lensX, fix_ca_params.lensY);
+#endif
+    if (! fixca_dialog (procedure, G_OBJECT (proc_config), &fix_ca_params))
+      status = GIMP_PDB_CANCEL;
   }
 
   /* Modify image according to input params */
@@ -443,7 +485,8 @@ fixca_run (GimpProcedure       *procedure,
     struct timeval tv1, tv2;
     gettimeofday (&tv1, NULL);
 
-    printf ("Start fixca(), x=%d y=%d width=%d height=%d\n", x, y, width, height);
+    printf ("Start fixca() image_size, {x=%d width=%d} {y=%d height=%d}\n",
+            x, width, y, height);
 #endif
 
     shadow = gimp_drawable_get_shadow_buffer(drawable);
@@ -453,16 +496,16 @@ fixca_run (GimpProcedure       *procedure,
                   ((run_mode == GIMP_RUN_NONINTERACTIVE)? -1:1));
 
 #ifdef DEBUG_TIME
-    printf ("finished doing fixca_region\n");
-    printf ("..blue=%g red=%g lens_x=%g lens_y=%g\n",
-            fix_ca_params.blueL, fix_ca_params.redL, fix_ca_params.lensX,
-            fix_ca_params.lensY);
-    printf ("..Xsize=%d/%d Ysize=%d/%d",
+    printf ("finished doing fixca_region,\n");
+    printf ("..Lateral correction: {blue=%g red=%g, lens center(x=%g, y=%g)}\n",
+            fix_ca_params.blueL, fix_ca_params.redL,
+            fix_ca_params.lensX, fix_ca_params.lensY);
+    printf ("..Image size: {Xsize=%d=%d, Ysize=%d=%d}\n",
             fix_ca_params.Xsize, width, fix_ca_params.Ysize, height);
-    printf ("..x_blue=%g x_red=%g x_blue=%g x_red=%g\n",
-            fix_ca_params.blueX, fix_ca_params.redX, fix_ca_params.blueY,
-            fix_ca_params.redY);
-    printf ("..interpolation=%d saturation=%g reset values=%d\n",
+    printf ("..Differential correction: {x_blue=%g x_red=%g x_blue=%g x_red=%g}\n",
+            fix_ca_params.blueX, fix_ca_params.redX,
+            fix_ca_params.blueY, fix_ca_params.redY);
+    printf ("..interpolation_mode=%d preview_saturation=%g reset_value=%d\n",
             fix_ca_params.interpolation, fix_ca_params.saturation,
             fix_ca_params.reset_values);
 #endif
@@ -500,8 +543,8 @@ static void
 set_default_settings (FixCaParams *params)
 {
   params->blueL = params->redL  = 0.0;
-  params->lensX = round (params->Xsize/2);
-  params->lensY = round (params->Ysize/2);
+  params->lensX = round ((params->Xsize+0.5)/2);
+  params->lensY = round ((params->Ysize+0.5)/2);
   params->interpolation = GIMP_INTERPOLATION_NONE;
   params->saturation = 0.0;
   params->blueX =  params->redX  = 0.0;
@@ -656,9 +699,9 @@ gfix_scale_entry_update (GimpLabelSpin *entry,
 
 static void
 gfix_combo_entry_update (GtkWidget *widget,
-                         gint      *value)
+                         gpointer  *data)
 {
-  gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget), &value);
+  gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget), (gint *) data);
 }
 
 static gboolean
@@ -666,106 +709,6 @@ fixca_dialog (GimpProcedure       *procedure,
               GObject             *config,
               FixCaParams         *params)
 {
-#if 0
-  // NOTE: F1 help missing in gimp_procedure_dialog_new.
-  // TODO: preview window not updated, config values are unused.
-  GtkWidget    *dialog;
-  GtkListStore *store;
-  GtkWidget    *preview;
-  GtkWidget    *adj;
-  gboolean      run;
-  gint          x, y, width, height;
-
-  //g_object_set_data (config, "saturation", params->saturation);
-
-  gimp_ui_init (PLUG_IN_BINARY);
-
-  dialog = gimp_procedure_dialog_new (procedure,
-                                      GIMP_PROCEDURE_CONFIG (config),
-                                      _("Chromatic Aberration"));
-
-  gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                            GTK_RESPONSE_OK,
-                                            GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  gimp_window_set_transient (GTK_WINDOW (dialog));
-
-  /* frame for primitive radio buttons */
-  store = gimp_int_store_new (_("None (Fastest)"), GIMP_INTERPOLATION_NONE,
-                              _("Linear"),         GIMP_INTERPOLATION_LINEAR,
-                              _("Cubic (Best)"),   GIMP_INTERPOLATION_CUBIC,
-                              NULL);
-  frame = gimp_procedure_dialog_get_int_radio (GIMP_PROCEDURE_DIALOG (dialog),
-                                               "interpolation",
-                                               GIMP_INT_STORE (store));
-  gtk_widget_set_margin_bottom (frame, 12);
-
-  /* Lateral */
-  adj = gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "bluel", 0.1);
-  adj = gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "redl", 0.1);
-  adj = gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "lensx", 1.0);
-  adj = gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "lensy", 1.0);
-  gtk_widget_set_margin_bottom (adj, 12);
-  gimp_procedure_dialog_get_label (GIMP_PROCEDURE_DIALOG (dialog),
-                                   "lateral-label", _("Lateral"),
-                                   FALSE, FALSE);
-  gimp_procedure_dialog_fill_box (GIMP_PROCEDURE_DIALOG (dialog),
-                                  "lateral-vbox", "bluel", "redl",
-                                  "lensx", "lensy", NULL);
-  gimp_procedure_dialog_fill_frame (GIMP_PROCEDURE_DIALOG (dialog),
-                                    "lateral-frame", "lateral-label",
-                                    FALSE, "lateral-vbox");
-
-  /* Directional */
-  adj = gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "bluex", 0.1);
-  adj = gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "redx", 0.1);
-  adj = gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "bluey", 0.1);
-  adj = gimp_procedure_dialog_get_scale_entry (GIMP_PROCEDURE_DIALOG (dialog),
-                                         "redy", 0.1);
-  gtk_widget_set_margin_bottom (adj, 12);
-  gimp_procedure_dialog_get_label (GIMP_PROCEDURE_DIALOG (dialog),
-                                   "directional-label", _("Directional"),
-                                   FALSE, FALSE);
-  gimp_procedure_dialog_fill_box (GIMP_PROCEDURE_DIALOG (dialog),
-                                  "directional-vbox", "bluex", "redx",
-                                  "bluey", "redy", NULL);
-  gimp_procedure_dialog_fill_frame (GIMP_PROCEDURE_DIALOG (dialog),
-                                    "directional-frame", "directional-label",
-                                    FALSE, "directional-vbox");
-
-  gimp_procedure_dialog_fill_box (GIMP_PROCEDURE_DIALOG (dialog),
-                                  "fixca-vbox", "interpolation", "lateral-frame",
-                                  "directional-frame", NULL);
-
-  preview = gimp_procedure_dialog_get_drawable_preview (GIMP_PROCEDURE_DIALOG (dialog),
-                                                        "preview", params->drawable);
-  g_object_set_data (config, "fixcaparams", params);
-  g_signal_connect (preview, "invalidated", G_CALLBACK (preview_update), config);
-
-  g_signal_connect_swapped (config, "notify",
-                            G_CALLBACK (gimp_preview_invalidate),
-                            preview);
-
-  gimp_procedure_dialog_fill (GIMP_PROCEDURE_DIALOG (dialog),
-                              "preview", "fixca-vbox", NULL);
-
-  gtk_widget_show (dialog);
-  run = gimp_procedure_dialog_run (GIMP_PROCEDURE_DIALOG (dialog));
-  gtk_widget_destroy (dialog);
-
-  //g_object_unref (saturation);
-  //g_object_unref (fixcaparams);
-
-#else
-  // this is similar to GIMP2, v2.10 code
   GtkWidget *dialog;
   GtkWidget *main_vbox;
   GtkWidget *combo;
@@ -864,6 +807,7 @@ fixca_dialog (GimpProcedure       *procedure,
 
   adj = gimp_scale_entry_new (_("Lens_X:"), params->lensX, -1, params->Xsize-1, 0);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 10, 100);
+  gimp_label_spin_set_value (GIMP_LABEL_SPIN (adj), params->lensX);
   gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
@@ -876,6 +820,7 @@ fixca_dialog (GimpProcedure       *procedure,
 
   adj = gimp_scale_entry_new (_("Lens_Y:"), params->lensY, -1, params->Ysize-1, 0);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 10, 100);
+  gimp_label_spin_set_value (GIMP_LABEL_SPIN (adj), params->lensY);
   gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
@@ -966,8 +911,6 @@ fixca_dialog (GimpProcedure       *procedure,
                   NULL);
   }
   gtk_widget_destroy (dialog);
-#endif
-
   return run;
 }
 
@@ -1210,8 +1153,12 @@ fixca_region (FixCaParams *params,
   }
   dest = g_new (guchar, (x2-x1) * bytes);
 
-  x_center = params->lensX;
-  y_center = params->lensY;
+  x_center = params->lensX + 0.5;
+  if (x_center < 0)
+    x_center = params->Xsize/2;
+  y_center = params->lensY + 0.5;
+  if (y_center < 0)
+    y_center = params->Ysize/2;
   /* Scale to get source */
   if (x_center >= y_center)
     max_dim = x_center;
@@ -1223,6 +1170,9 @@ fixca_region (FixCaParams *params,
     max_dim = orig_height - y_center;
   scale_blue = max_dim / (max_dim + params->blueL);
   scale_red = max_dim / (max_dim + params->redL);
+#ifdef DEBUG_TIME
+    printf("centerX=%d centerY=%d maxdim=%d\n", x_center, y_center, max_dim);
+#endif
 
   /* Optimize by loading only parts of a row */
   if (scale_blue > scale_red)
@@ -1528,21 +1478,5 @@ fixca_region (FixCaParams *params,
 static void
 fixca_help (const gchar *help_id, gpointer help_data)
 {
-  gimp_message(_("The image to modify is in RGB format.  Color precision "
-                 "can be double, 8, 16, 32 or 64.  The green pixels are "
-                 "kept stationary, and you can shift red and blue colors "
-                 "within a range of {-30..+30} pixels.\n\n"
-                 "Lateral Chromatic Aberration is due to camera lens(es) "
-                 "with no aberration at the lens center, and increasing "
-                 "gradually toward the edges of the image. Digital cameras "
-		 "may correct for this in software, analog cameras, or "
-		 "adapters may show this in resulting photos or images.\n\n"
-                 "Directional X and Y axis aberrations are a flat amount "
-                 "of aberration due to image seen through something like "
-                 "glass, water, or another medium of different density.  "
-                 "You can shift pixels up/left {-30..+30} down/right.\n\n"
-                 "Lateral aberration correction is applied first, since "
-                 "the lens(es) are closest to the film or image sensor, "
-                 "and directional corrections applied last since this is "
-                 "the furthest away from the camera."));
+  gimp_message(_(PLUG_IN_LONG_DESC));
 }

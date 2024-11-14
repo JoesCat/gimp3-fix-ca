@@ -21,7 +21,7 @@ AC_PREREQ([2.69])
 #
 m4_define([fix_ca_name], [gimp3-fix-ca])
 m4_define([fix_ca_major_version], [0])
-m4_define([fix_ca_minor_version], [0])
+m4_define([fix_ca_minor_version], [1])
 m4_define([fix_ca_version],[fix_ca_major_version.fix_ca_minor_version])
 m4_define([fix_ca_package_name], [gimp3-fix-ca])
 m4_define([fix_ca_package_home], [https://github.com/JoesCat/gimp3-fix-ca])
@@ -52,8 +52,8 @@ AC_PROG_SED
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
 AC_PATH_PROG([CHMOD],[chmod],[:])
-AC_CHECK_PROGS([GIMP],[gimp-3.0 gimp-2.99],[:])
-AC_CHECK_PROGS([GIMPTOOL],[gimptool-3.0 gimptool-2.99],[:])
+AC_CHECK_PROGS([GIMP],[gimp-3.0],[:])
+AC_CHECK_PROGS([GIMPTOOL],[gimptool-3.0],[:])
 AC_PATH_PROG([MD5SUM],[md5sum],[:])
 AC_PATH_PROG([MSGFMT],[msgfmt],[:])
 AC_PATH_PROG([MSGINIT],[msginit],[:])
@@ -120,12 +120,18 @@ if test "${FCA_CFLAGS}"x != x; then
 fi
 
 #--------------------------------------------------------------------------
+# Check for required libraries.
+# NOTE: Some distros don't have /usr/local included in the /etc/ld.so PATH,
+# so, PKG_CHECK_MODULES may not find libraries you compile into /usr/local,
+# therefore use AC_SEARCH_LIBS, AC_CHECK_FUNC for backup.
+
 # Check for math.h include and math library (some OSes have -lm built-in).
 have_libm=maybe
 AC_CHECK_HEADER([math.h],
-    AC_SEARCH_LIBS([cos],[m],[have_libm=yes]))
+  AC_SEARCH_LIBS([cos],[m],[have_libm=yes],
+    AC_CHECK_FUNC([cos],[have_libm=yes])))
 if test x"${have_libm}" != xyes; then
-    AC_MSG_FAILURE([ERROR: Please install the Math library and math.h],[1])
+  AC_MSG_FAILURE([ERROR: Please install the Math library and math.h],[1])
 fi
 
 # Avoid being locked to a particular gettext verion, use what's available.
@@ -135,9 +141,12 @@ AC_CHECK_FUNC([gettext],[have_gettext=yes],[have_gettext=no])
 AC_CHECK_FUNC([bind_textdomain_codeset],,[have_gettext=no])
 AC_CHECK_FUNC([textdomain],,[have_gettext=no])
 if test x"${have_gettext}" = xno; then
-	AC_SEARCH_LIBS([intl],[have_gettext=yes],[
-	AC_MSG_ERROR([ERROR: gettext() required! Please install libintl or GETTEXT Packages.])])
+  AC_SEARCH_LIBS([intl],[have_gettext=yes],[
+    AC_MSG_ERROR([ERROR: gettext() required! Please install libintl or GETTEXT Packages.])])
 fi
+AC_CHECK_HEADER([locale.h],
+  AC_CHECK_FUNC([setlocale],,[
+    AC_MSG_ERROR([ERROR: setlocale() required! Please install setlocale packages.])]))
 GETTEXT_PACKAGE=gimp30-fix-ca
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext translation domain.])
@@ -185,7 +194,7 @@ CPPFLAGS="${CPPFLAGS} AS_ESCAPE([-I${top_builddir}]) AS_ESCAPE([-I${top_srcdir}]
 AC_SUBST([CPPFLAGS],["${CPPFLAGS}"])
 
 #--------------------------------------------------------------------------
-# Enable debug_time mode
+# Enable debug_time mode, shows runtime and various printf on command-line.
 AC_ARG_ENABLE([debugtime],
   [AS_HELP_STRING([--enable-debugtime],
     [Enable debugging time printf mode on commandline @<:@default=no@:>@])],

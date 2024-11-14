@@ -36,9 +36,11 @@ such as glass or water.
 %prep
 %setup -q
 
-%build
+%conf
 autoreconf --force --install --verbose
 %configure
+
+%build
 %make_build
 
 #%check
