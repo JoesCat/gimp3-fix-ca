@@ -8,7 +8,7 @@ Name:		gimp3-fix-ca
 Version:	0.1
 Release:	0
 Summary:	A Gimp3 plugin for correcting Chromatic Aberration (CA)
-License:	GPLv3+
+License:	GPL-3.0-or-later
 Group:		Productivity/Graphics/Bitmap Editors
 URL:		https://github.com/JoesCat/gimp3-fix-ca
 Source0:	https://github.com/JoesCat/gimp3-fix-ca/archive/%{version}/%{name}-%{version}.tar.gz
@@ -68,6 +68,6 @@ autoreconf --force --install --verbose
 
 
 %changelog
-* Fri Nov 15 2024 Jose Da Silva <digital@joescat.com> 
-- Initial version 0.1 Gimp3-Fix-Ca for GIMP-3.0-RC1 
+* Fri Nov 15 2024 Jose Da Silva <digital@joescat.com>
+- Initial version 0.1 Gimp3-Fix-Ca for GIMP-3.0-RC1
 
