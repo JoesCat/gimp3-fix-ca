@@ -71,3 +71,4 @@ autoreconf --force --install --verbose
 * Fri Nov 15 2024 Jose Da Silva <digital@joescat.com>
 - Initial version 0.1 Gimp3-Fix-Ca for GIMP-3.0-RC1
 
+
