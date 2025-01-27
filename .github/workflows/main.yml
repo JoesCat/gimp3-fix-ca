@@ -1,0 +1,90 @@
+name: CI
+on: [push,pull_request]
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        choiceL: [--disable-silent-rules, --enable-silent-rules, --enable-debugtime]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create configure
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install autoconf automake libtool gcc libgimp-3.0-dev
+          autoreconf -i
+          automake
+      - name: Choose configure
+        run: ./configure ${{ matrix.choiceL }}
+      - name: Make gimp-plugin-fix-ca
+        run: make
+      - name: Test make strip
+        if: matrix.choiceL == '--disable-silent-rules'
+        run: make strip
+      - name: Test user-level install/uninstall
+        if: matrix.choiceL == '--disable-silent-rules'
+        run: |
+          make install-user
+          make uninstall-user
+      - name: Test make install GIMP shared plugin
+        if: matrix.choiceL == '--disable-silent-rules'
+        run: |
+          sudo make install
+          sudo make uninstall
+      - name: Test make distcheck
+        if: matrix.choiceL == '--disable-silent-rules'
+        run: make distcheck
+  win:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include: [
+          {msystem: MINGW32, toolchain: mingw-w64-i686, version: x32 },
+          {msystem: MINGW64, toolchain: mingw-w64-x86_64, version: x64 },
+          {msystem: UCRT64, toolchain: mingw-w64-ucrt-x86_64, version: x64 },
+          {msystem: CLANG64, toolchain: mingw-w64-clang-x86_64, version: x64 },
+        ]
+    name: ${{ matrix.msystem }}
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.msystem }}
+          update: true
+          install: autotools base-devel git ${{ matrix.toolchain }}-toolchain ${{ matrix.toolchain }}-gimp3 ${{ matrix.toolchain }}-gettext-tools
+      - name: Create configure
+        run: |
+          autoreconf -i
+          automake
+      - name: run ./configure
+        run: ./configure
+      - name: Make gimp-fix-ca
+        run: make
+  local:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create configure
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install autoconf automake libtool gcc libgimp-3.0-dev
+      - name: Make local gimp-fix-ca install
+        run: gimptool-2.99 --install fix-ca.c
+      - name: Uninstall local gimp-fix-ca
+        run: gimptool-2.99 --uninstall-bin fix-ca
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create configure
+        run: |
+          sudo port install gimp3-devel
+          sudo port install autoconf automake libtool gcc
+      - name: Make local gimp-fix-ca install
+        run: gimptool-2.99 --install fix-ca.c
+      - name: Uninstall local gimp-fix-ca
+        run: gimptool-2.99 --uninstall-bin fix-ca

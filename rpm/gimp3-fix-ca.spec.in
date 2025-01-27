@@ -43,9 +43,8 @@ autoreconf --force --install --verbose
 %build
 %make_build
 
-#%check
-#make check
-
+%check
+make check
 
 %install
 %make_install INSTALLDIR="%{buildroot}/%{plugindir}" \

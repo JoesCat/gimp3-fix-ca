@@ -41,7 +41,7 @@ update-test1:
 	echo "rm -f ${builddir}/test1.bmp" >> ${builddir}/test1.sh; \
 	echo "${GIMPTOOL} --install-script ${builddir}/test-fix-ca.scm" >> ${builddir}/test1.sh; \
 	echo "${GIMPTOOL} --install-bin ${builddir}/test-fix-ca" >> ${builddir}/test1.sh; \
-	echo "${GIMP} --verbose --console-messages -i --batch-interpreter plug-in-script-fu-eval -b '(test-fix-ca-scm RUN-NONINTERACTIVE)' -b '(gimp-quit 0)'" >> ${builddir}/test1.sh; \
+	echo "gimp-console-3 --verbose --console-messages -i --batch-interpreter=plug-in-script-fu-eval -b '(test-fix-ca-scm RUN-NONINTERACTIVE)' -b '(gimp-quit 0)'" >> ${builddir}/test1.sh; \
 	echo "${GIMPTOOL} --uninstall-bin test-fix-ca" >> ${builddir}/test1.sh; \
 	echo "${GIMPTOOL} --uninstall-script test-fix-ca.scm" >> ${builddir}/test1.sh; \
 	echo "${MD5SUM} -c ${top_srcdir}/tests/test1.md5" >> ${builddir}/test1.sh; \
