@@ -1,7 +1,7 @@
 /*
  * fix-ca.c - gimp3-plugin-fix-ca - Fix Chromatic Aberration
  * Copyright (c) 2006, 2007 Kriang Lerdsuwanakij - (original author)
- * Copyright (c) 2023, 2024 Jose Da Silva (gimp3, updates, improvements)
+ * Copyright (c) 2023, 2025 Jose Da Silva (gimp3, updates, improvements)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -180,7 +180,7 @@ fixca_query_procedures (GimpPlugIn *plug_in)
 
 /* Only translate 'Colors', <Image>/Filters/ stays as-English */
 static const char *PLUG_IN_MENU_LOCATION = d_("<Image>/Filters/Colors");
-static const char *PLUG_IN_MENU_LABEL = d_("Chromatic Aberration...");
+static const char *PLUG_IN_MENU_LABEL = d_("Fix-CA (Chromatic Aberration)...");
 static const char *PLUG_IN_SHORT_DESC = d_(
   "Fix Chromatic Aberration by shifting red and blue pixels.");
 static const char *PLUG_IN_LONG_DESC = d_(
@@ -238,7 +238,7 @@ fixca_create_procedure (GimpPlugIn *plug_in,
     gimp_procedure_set_attribution (procedure,
     /* author(s), original first */ "Kriang Lerdsuwanakij (2006..), Jose Da Silva (2022..)",
     /* copyright license         */ "GPL3+",
-    /* date for the latest build */ "2024");
+    /* date for the latest build */ "2025");
 
     gimp_procedure_add_double_argument (procedure, "bluel",
                                         _("_Blue-L"), _("Blue amount (lateral)"),
@@ -710,6 +710,7 @@ fixca_dialog (GimpProcedure       *procedure,
               FixCaParams         *params)
 {
   GtkWidget *dialog;
+  GtkWidget *scrolled_window;
   GtkWidget *main_vbox;
   GtkWidget *combo;
   GtkWidget *preview;
@@ -729,13 +730,23 @@ fixca_dialog (GimpProcedure       *procedure,
   g_free (title);
   g_object_set_data (config, "fixcaparams", params);
 
+  gtk_widget_set_size_request (dialog, 540, 1000);
+  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+                                  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
+                      scrolled_window, TRUE, TRUE, 0);
+  gtk_widget_show (scrolled_window);
+
   main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window), main_vbox);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
                       main_vbox, TRUE, TRUE, 0);
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new_from_drawable (params->drawable);
+  gtk_widget_set_size_request (preview, 512, 512);
   gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
 

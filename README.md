@@ -227,6 +227,7 @@ build files. Gimp is still in release candidate mode and bugs are getting fixed.
 ## Version History
 
 GIMP3-Fix-CA
+- 0.2 (May 4, 2025) Preview window increased from default 200x200 to 512x512 (Thanks to JamesH).
 - 0.1 (Nov 14, 2024) Ready for GIMP3-RC1 (Release Candidate 1 - Ready for larger audience, API expected to be stable).
 - 0.0 (May 15, 2024) Pre-release (GIMP3 >= 2.99.19^20240515 - API is not stable yet).
 
@@ -243,5 +244,5 @@ GIMP2-Fix-CA
 
 
 Note: The Original Web page content and pictures are copyrighted (c) 2006, 2007
-by Kriang Lerdsuwanakij. New Added images and web page content added 2022..2024
+by Kriang Lerdsuwanakij. New Added images and web page content added 2022..2025
 by Jose Da Silva are under the same license as this GPL3+ project.

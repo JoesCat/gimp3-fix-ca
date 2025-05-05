@@ -21,7 +21,7 @@ AC_PREREQ([2.69])
 #
 m4_define([fix_ca_name], [gimp3-fix-ca])
 m4_define([fix_ca_major_version], [0])
-m4_define([fix_ca_minor_version], [1])
+m4_define([fix_ca_minor_version], [2])
 m4_define([fix_ca_version],[fix_ca_major_version.fix_ca_minor_version])
 m4_define([fix_ca_package_name], [gimp3-fix-ca])
 m4_define([fix_ca_package_home], [https://github.com/JoesCat/gimp3-fix-ca])
