@@ -710,11 +710,13 @@ fixca_dialog (GimpProcedure       *procedure,
               FixCaParams         *params)
 {
   GtkWidget *dialog;
-  GtkWidget *scrolled_window;
-  GtkWidget *main_vbox;
+  GtkWidget *main_vboxL;
+  GtkWidget *main_vboxR;
   GtkWidget *combo;
   GtkWidget *preview;
-  GtkWidget *frame;
+  GtkWidget *frameL;
+  GtkWidget *frameR;
+  GtkWidget *grid;
   GtkWidget *adj;
   gchar     *title;
   gboolean   run;
@@ -730,30 +732,37 @@ fixca_dialog (GimpProcedure       *procedure,
   g_free (title);
   g_object_set_data (config, "fixcaparams", params);
 
-  gtk_widget_set_size_request (dialog, 540, 1000);
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-                                  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      scrolled_window, TRUE, TRUE, 0);
-  gtk_widget_show (scrolled_window);
 
-  main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window), main_vbox);
+  grid = gtk_grid_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (grid), 12);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
-                      main_vbox, TRUE, TRUE, 0);
-  gtk_widget_show (main_vbox);
+                      grid, TRUE, TRUE, 0);
+  gtk_grid_set_row_spacing (GTK_GRID (grid), 5);
+  gtk_grid_set_column_spacing (GTK_GRID (grid), 5);
+  gtk_widget_show (grid);
 
   preview = gimp_drawable_preview_new_from_drawable (params->drawable);
+//  gtk_window_set_default_size (GIMP_PREVIEW (preview),
+//                               (params->Xsize < 512 ? params->Xsize : 512),
+//                               (params->Ysize < 512 ? params->Ysize : 512));
   gtk_widget_set_size_request (preview, 512, 512);
-  gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
+  gtk_grid_attach (GTK_GRID (grid), preview, 0, 0, 2, 1);
   gtk_widget_show (preview);
 
   g_signal_connect (preview, "invalidated", G_CALLBACK (preview_update), config);
   g_signal_connect_swapped (config, "notify",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
+
+  main_vboxL = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+  gtk_container_set_border_width (GTK_CONTAINER (main_vboxL), 5);
+  gtk_grid_attach (GTK_GRID (grid), main_vboxL, 0, 1, 1, 1);
+  gtk_widget_show (main_vboxL);
+
+  main_vboxR = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+  gtk_container_set_border_width (GTK_CONTAINER (main_vboxR), 5);
+  gtk_grid_attach (GTK_GRID (grid), main_vboxR, 1, 1, 1, 1);
+  gtk_widget_show (main_vboxR);
 
   adj = gimp_scale_entry_new (_("_Saturation:"),
                               params->saturation, -100.0, 100.0, 0);
@@ -768,7 +777,7 @@ fixca_dialog (GimpProcedure       *procedure,
   g_signal_connect_swapped (adj, "value_changed",
                             G_CALLBACK(gimp_preview_invalidate),
                             preview);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxL), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   combo = gimp_int_combo_box_new (_("_None (Fastest)"), GIMP_INTERPOLATION_NONE,
@@ -782,19 +791,19 @@ fixca_dialog (GimpProcedure       *procedure,
   g_signal_connect (combo, "changed",
                     G_CALLBACK (gimp_int_combo_box_get_active),
                     &(params->interpolation));
-  gtk_box_pack_start (GTK_BOX (main_vbox), combo, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxR), combo, FALSE, FALSE, 0);
   gtk_widget_show (combo);
 
-  frame = gimp_frame_new (_("Lateral"));
-  gimp_help_set_help_data (frame,
+  frameL = gimp_frame_new (_("Lateral"));
+  gimp_help_set_help_data (frameL,
                            _("Do corrections for lens affected chromatic aberration"),
                            NULL);
-  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
+  gtk_box_pack_start (GTK_BOX (main_vboxL), frameL, FALSE, FALSE, 0);
+  gtk_widget_show (frameL);
 
   adj = gimp_scale_entry_new (_("_Blue:"), params->blueL, -INPUT_MAX, INPUT_MAX, 1);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxL), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   g_signal_connect (adj, "value_changed",
@@ -806,7 +815,7 @@ fixca_dialog (GimpProcedure       *procedure,
 
   adj = gimp_scale_entry_new (_("_Red:"), params->redL, -INPUT_MAX, INPUT_MAX, 1);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxL), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   g_signal_connect (adj, "value_changed",
@@ -819,7 +828,7 @@ fixca_dialog (GimpProcedure       *procedure,
   adj = gimp_scale_entry_new (_("Lens_X:"), params->lensX, -1, params->Xsize-1, 0);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 10, 100);
   gimp_label_spin_set_value (GIMP_LABEL_SPIN (adj), params->lensX);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxL), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   g_signal_connect (adj, "value_changed",
@@ -832,7 +841,7 @@ fixca_dialog (GimpProcedure       *procedure,
   adj = gimp_scale_entry_new (_("Lens_Y:"), params->lensY, -1, params->Ysize-1, 0);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 10, 100);
   gimp_label_spin_set_value (GIMP_LABEL_SPIN (adj), params->lensY);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxL), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   g_signal_connect (adj, "value_changed",
@@ -842,16 +851,16 @@ fixca_dialog (GimpProcedure       *procedure,
                             G_CALLBACK(gimp_preview_invalidate),
                             preview);
 
-  frame = gimp_frame_new (_("Directional, X axis"));
-  gimp_help_set_help_data (frame,
+  frameR = gimp_frame_new (_("Directional, X axis"));
+  gimp_help_set_help_data (frameR,
                            _("Do flat directional corrections along the X axis"),
                            NULL);
-  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
+  gtk_box_pack_start (GTK_BOX (main_vboxR), frameR, FALSE, FALSE, 0);
+  gtk_widget_show (frameR);
 
   adj = gimp_scale_entry_new (_("B_lue:"), params->blueX, -INPUT_MAX, INPUT_MAX, 1);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxR), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   g_signal_connect (adj, "value_changed",
@@ -863,7 +872,7 @@ fixca_dialog (GimpProcedure       *procedure,
 
   adj = gimp_scale_entry_new (_("R_ed:"), params->redX, -INPUT_MAX, INPUT_MAX, 1);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxR), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   g_signal_connect (adj, "value_changed",
@@ -873,16 +882,16 @@ fixca_dialog (GimpProcedure       *procedure,
                            G_CALLBACK(gimp_preview_invalidate),
                            preview);
 
-  frame = gimp_frame_new (_("Directional, Y axis"));
-  gimp_help_set_help_data (frame,
+  frameR = gimp_frame_new (_("Directional, Y axis"));
+  gimp_help_set_help_data (frameR,
                            _("Do flat directional corrections along the Y axis"),
                            NULL);
-  gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
-  gtk_widget_show (frame);
+  gtk_box_pack_start (GTK_BOX (main_vboxR), frameR, FALSE, FALSE, 0);
+  gtk_widget_show (frameR);
 
   adj = gimp_scale_entry_new (_("Bl_ue:"), params->blueY, -INPUT_MAX, INPUT_MAX, 1);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxR), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   g_signal_connect (adj, "value_changed",
@@ -894,7 +903,7 @@ fixca_dialog (GimpProcedure       *procedure,
 
   adj = gimp_scale_entry_new (_("Re_d:"), params->redY, -INPUT_MAX, INPUT_MAX, 1);
   gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
-  gtk_box_pack_start (GTK_BOX (main_vbox), adj, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vboxR), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
   g_signal_connect (adj, "value_changed",
