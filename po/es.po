@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp-fix-ca\n"
 "Report-Msgid-Bugs-To: https://github.com/JoesCat/gimp3-fix-ca/issues\n"
-"POT-Creation-Date: 2025-05-04 23:20-0700\n"
+"POT-Creation-Date: 2025-06-07 22:39-0700\n"
 "PO-Revision-Date: 2024-02-19 23:10-0800\n"
 "Last-Translator: Jose Da Silva <digital@joescat.com>\n"
 "Language-Team: \n"
@@ -17,20 +17,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../fix-ca.c:182
-msgid "<Image>/Filters/Colors"
-msgstr "<Image>/Filters/Colores"
-
-#: ../fix-ca.c:183
-#, fuzzy
-msgid "Fix-CA (Chromatic Aberration)..."
-msgstr "Fix-CA (Aberración Cromática)..."
-
 #: ../fix-ca.c:185
+#, fuzzy
+msgid "_Fix-CA (Chromatic Aberration)..."
+msgstr "_Fix-CA (Aberración Cromática)..."
+
+#: ../fix-ca.c:187
 msgid "Fix Chromatic Aberration by shifting red and blue pixels."
 msgstr "Corrija la aberración cromática cambiando los píxeles rojos y azules."
 
-#: ../fix-ca.c:187
+#: ../fix-ca.c:189
 #, fuzzy
 msgid ""
 "Lateral Chromatic Aberration is due to camera lens(es) with no aberration at "
@@ -70,99 +66,99 @@ msgstr ""
 "doble, 8, 16, 32, 64. Los píxeles verdes se mantienen estacionarios ypuede "
 "cambiar los colores rojo y azul dentro de un rango de {-30..+30} píxeles."
 
-#: ../fix-ca.c:244
+#: ../fix-ca.c:249
 #, fuzzy
 msgid "_Blue-L"
 msgstr "_Azul-L"
 
-#: ../fix-ca.c:244
+#: ../fix-ca.c:249
 msgid "Blue amount (lateral)"
 msgstr "Movimiento azul (lateral)"
 
-#: ../fix-ca.c:248
+#: ../fix-ca.c:253
 #, fuzzy
 msgid "_Red-L"
 msgstr "_Rojo-L"
 
-#: ../fix-ca.c:248
+#: ../fix-ca.c:253
 msgid "Red amount (lateral)"
 msgstr "Movimiento rojo (lateral)"
 
-#: ../fix-ca.c:252
+#: ../fix-ca.c:257
 #, fuzzy
 msgid "Lens_X"
 msgstr "Lente_X"
 
-#: ../fix-ca.c:252
+#: ../fix-ca.c:257
 msgid "Lens center X (lateral)"
 msgstr "Centro de la lente X (lateral)"
 
-#: ../fix-ca.c:256
+#: ../fix-ca.c:261
 #, fuzzy
 msgid "Lens_Y"
 msgstr "Lente_Y"
 
-#: ../fix-ca.c:256
+#: ../fix-ca.c:261
 msgid "Lens center Y (lateral)"
 msgstr "Centro de la lente Y (lateral)"
 
-#: ../fix-ca.c:260
+#: ../fix-ca.c:265
 #, fuzzy
 msgid "_Interpolation"
 msgstr "_Interpolación"
 
-#: ../fix-ca.c:261
+#: ../fix-ca.c:266
 msgid "Interpolation 0=None/1=Linear/2=Cubic"
 msgstr "Interpolación 0=Ninguna/1=Lineal/2=Cúbica"
 
-#: ../fix-ca.c:264
+#: ../fix-ca.c:269
 msgid "B_lue-X"
 msgstr "A_zul-X"
 
-#: ../fix-ca.c:265
+#: ../fix-ca.c:270
 msgid "Blue amount, X axis (directional)"
 msgstr "Azul mover eje X (direccional)"
 
-#: ../fix-ca.c:269
+#: ../fix-ca.c:274
 msgid "R_ed-X"
 msgstr "R_ojo-X"
 
-#: ../fix-ca.c:270
+#: ../fix-ca.c:275
 msgid "Red amount, X axis (directional)"
 msgstr "Rojo mover eje X (direccional)"
 
-#: ../fix-ca.c:274
+#: ../fix-ca.c:279
 msgid "Bl_ue-Y"
 msgstr "Az_ul-Y"
 
-#: ../fix-ca.c:275
+#: ../fix-ca.c:280
 msgid "Blue amount, Y axis (directional)"
 msgstr "Azul mover eje Y (direccional)"
 
-#: ../fix-ca.c:279
+#: ../fix-ca.c:284
 msgid "Re_d-Y"
 msgstr "Ro_jo-Y"
 
-#: ../fix-ca.c:280
+#: ../fix-ca.c:285
 msgid "Red amount, Y axis (directional)"
 msgstr "Azul mover eje Y (direccional)"
 
-#: ../fix-ca.c:319
+#: ../fix-ca.c:324
 #, c-format
 msgid "Procedure '%s' only works with one drawable."
 msgstr "Procedimiento '%s' solo funciona con un elemento dibujable."
 
-#: ../fix-ca.c:330
+#: ../fix-ca.c:335
 #, c-format
 msgid "Procedure '%s' only works with RGB or RGBA."
 msgstr "Procedimiento '%s' solo funciona con RGB o RGBA."
 
-#: ../fix-ca.c:428
+#: ../fix-ca.c:433
 #, c-format
 msgid "Procedure '%s' cannot use this color precision."
 msgstr "Procedimiento '%s' no puede utilizar esta precisión de color."
 
-#: ../fix-ca.c:452
+#: ../fix-ca.c:457
 #, c-format
 msgid "Procedure '%s', not enough RAM."
 msgstr "Procedimiento '%s', no hay suficiente RAM."
@@ -179,88 +175,78 @@ msgstr "_Cancelar"
 msgid "_OK"
 msgstr "_OK"
 
-#: ../fix-ca.c:758
+#: ../fix-ca.c:771
 #, fuzzy
-msgid "_Saturation:"
-msgstr "_Saturación:"
+msgid "Saturation:"
+msgstr "Saturación:"
 
-#: ../fix-ca.c:762
+#: ../fix-ca.c:775
 msgid "Saturate colors in preview window to help you see overlaps"
 msgstr "Saturar colores en vista previa para ayudarle a ver superposiciones"
 
-#: ../fix-ca.c:774
-msgid "_None (Fastest)"
-msgstr "_Ninguno (Más rápido)"
+#: ../fix-ca.c:787
+#, fuzzy
+msgid "None (Fastest)"
+msgstr "Ninguno (Más rápido)"
 
-#: ../fix-ca.c:775
-msgid "L_inear"
-msgstr "L_ineales"
+#: ../fix-ca.c:788
+#, fuzzy
+msgid "Linear"
+msgstr "Lineales"
 
-#: ../fix-ca.c:776
-msgid "_Cubic (Best)"
-msgstr "Cú_bica (Mejor)"
+#: ../fix-ca.c:789
+#, fuzzy
+msgid "Cubic (Best)"
+msgstr "Cúbica (Mejor)"
 
-#: ../fix-ca.c:780
+#: ../fix-ca.c:793
 msgid "Method of how to move Blue and Red Pixels"
 msgstr "Método de cómo mover píxeles azules y rojos"
 
-#: ../fix-ca.c:788
+#: ../fix-ca.c:801
 msgid "Lateral"
 msgstr "Lateral"
 
-#: ../fix-ca.c:790
+#: ../fix-ca.c:803
 msgid "Do corrections for lens affected chromatic aberration"
 msgstr "Hacer correcciones para la aberración cromática afectada por la lente."
 
-#: ../fix-ca.c:795
-msgid "_Blue:"
-msgstr "_Azul:"
+#: ../fix-ca.c:808 ../fix-ca.c:865 ../fix-ca.c:896
+#, fuzzy
+msgid "Blue:"
+msgstr "Azul:"
 
-#: ../fix-ca.c:807
-msgid "_Red:"
-msgstr "_Rojo:"
-
-#: ../fix-ca.c:819
-msgid "Lens_X:"
-msgstr "Lente_X:"
+#: ../fix-ca.c:820 ../fix-ca.c:877 ../fix-ca.c:908
+#, fuzzy
+msgid "Red:"
+msgstr "Rojo:"
 
 #: ../fix-ca.c:832
-msgid "Lens_Y:"
-msgstr "Lente_Y:"
+#, fuzzy
+msgid "Lens X:"
+msgstr "Lente X:"
 
 #: ../fix-ca.c:845
+#, fuzzy
+msgid "Lens Y:"
+msgstr "Lente Y:"
+
+#: ../fix-ca.c:858
 msgid "Directional, X axis"
 msgstr "Direccional, eje X"
 
-#: ../fix-ca.c:847
+#: ../fix-ca.c:860
 msgid "Do flat directional corrections along the X axis"
 msgstr "Hacer correcciones direccionales planas en el eje X"
 
-#: ../fix-ca.c:852
-#, fuzzy
-msgid "B_lue:"
-msgstr "A_zul:"
-
-#: ../fix-ca.c:864
-msgid "R_ed:"
-msgstr "R_ojo:"
-
-#: ../fix-ca.c:876
+#: ../fix-ca.c:889
 msgid "Directional, Y axis"
 msgstr "Direccional, eje Y"
 
-#: ../fix-ca.c:878
+#: ../fix-ca.c:891
 msgid "Do flat directional corrections along the Y axis"
 msgstr "Hacer correcciones direccionales planas en el eje Y"
 
-#: ../fix-ca.c:883
-msgid "Bl_ue:"
-msgstr "Az_ul:"
-
-#: ../fix-ca.c:895
-msgid "Re_d:"
-msgstr "Ro_jo:"
-
-#: ../fix-ca.c:1157
+#: ../fix-ca.c:1170
 msgid "Shifting pixel components..."
 msgstr "Moviendo píxeles..."

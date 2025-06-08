@@ -44,11 +44,11 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <releases>
-   <release version="0.1"   date="2024-11-14" />
-   <release version="0.0"   date="2024-05-15" />
+   <release version="0.3"   date="2025-06-07" />
+   <release version="0.2"   date="2025-05-04" />
   </releases>
   <requires>
-   <id version="2.99.19" compare="ge">org.gimp.GIMP</id>
+   <id version="3.0" compare="ge">org.gimp.GIMP</id>
   </requires>
   <metadata>
    <value key="GIMP::plug-in-path">fix-ca</value>

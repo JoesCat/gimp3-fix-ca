@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp-fix-ca\n"
 "Report-Msgid-Bugs-To: https://github.com/JoesCat/gimp3-fix-ca/issues\n"
-"POT-Creation-Date: 2025-05-04 23:20-0700\n"
+"POT-Creation-Date: 2025-06-07 22:39-0700\n"
 "PO-Revision-Date: 2024-02-19 21:00-0800\n"
 "Last-Translator: Jose Da Silva <digital@joescat.com>\n"
 "Language-Team: \n"
@@ -17,21 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../fix-ca.c:182
-msgid "<Image>/Filters/Colors"
-msgstr "<Image>/Filters/Couleur"
-
-#: ../fix-ca.c:183
-#, fuzzy
-msgid "Fix-CA (Chromatic Aberration)..."
-msgstr "Fix-CA (Aberration Chromatique)..."
-
 #: ../fix-ca.c:185
+#, fuzzy
+msgid "_Fix-CA (Chromatic Aberration)..."
+msgstr "_Fix-CA (Aberration Chromatique)..."
+
+#: ../fix-ca.c:187
 msgid "Fix Chromatic Aberration by shifting red and blue pixels."
 msgstr ""
 "Corrigez l'aberration chromatique en décalant les pixels rouges et bleus."
 
-#: ../fix-ca.c:187
+#: ../fix-ca.c:189
 #, fuzzy
 msgid ""
 "Lateral Chromatic Aberration is due to camera lens(es) with no aberration at "
@@ -72,99 +68,99 @@ msgstr ""
 "vous pouvez décaler les couleurs rouge et bleue dans une plage de {-30..+30} "
 "pixels."
 
-#: ../fix-ca.c:244
+#: ../fix-ca.c:249
 #, fuzzy
 msgid "_Blue-L"
 msgstr "_Bleue-L"
 
-#: ../fix-ca.c:244
+#: ../fix-ca.c:249
 msgid "Blue amount (lateral)"
 msgstr "Mouvement bleue (latéral)"
 
-#: ../fix-ca.c:248
+#: ../fix-ca.c:253
 #, fuzzy
 msgid "_Red-L"
 msgstr "_Rouge-L"
 
-#: ../fix-ca.c:248
+#: ../fix-ca.c:253
 msgid "Red amount (lateral)"
 msgstr "Mouvement rouge (latéral)"
 
-#: ../fix-ca.c:252
+#: ../fix-ca.c:257
 #, fuzzy
 msgid "Lens_X"
 msgstr "Lentille_X"
 
-#: ../fix-ca.c:252
+#: ../fix-ca.c:257
 msgid "Lens center X (lateral)"
 msgstr "Centre de la lentille X (latéral)"
 
-#: ../fix-ca.c:256
+#: ../fix-ca.c:261
 #, fuzzy
 msgid "Lens_Y"
 msgstr "Lentille_Y"
 
-#: ../fix-ca.c:256
+#: ../fix-ca.c:261
 msgid "Lens center Y (lateral)"
 msgstr "Centre de la lentille Y (latéral)"
 
-#: ../fix-ca.c:260
+#: ../fix-ca.c:265
 #, fuzzy
 msgid "_Interpolation"
 msgstr "_Interpolation"
 
-#: ../fix-ca.c:261
+#: ../fix-ca.c:266
 msgid "Interpolation 0=None/1=Linear/2=Cubic"
 msgstr "Interpolation 0=Aucune/1=Linéaire/2=Cubique"
 
-#: ../fix-ca.c:264
+#: ../fix-ca.c:269
 msgid "B_lue-X"
 msgstr "B_leue-X"
 
-#: ../fix-ca.c:265
+#: ../fix-ca.c:270
 msgid "Blue amount, X axis (directional)"
 msgstr "Quantité de bleue, axe X (directionnel)"
 
-#: ../fix-ca.c:269
+#: ../fix-ca.c:274
 msgid "R_ed-X"
 msgstr "R_ouge-X"
 
-#: ../fix-ca.c:270
+#: ../fix-ca.c:275
 msgid "Red amount, X axis (directional)"
 msgstr "Quantité de rouge, axe X (directionnel)"
 
-#: ../fix-ca.c:274
+#: ../fix-ca.c:279
 msgid "Bl_ue-Y"
 msgstr "Bl_eue-Y"
 
-#: ../fix-ca.c:275
+#: ../fix-ca.c:280
 msgid "Blue amount, Y axis (directional)"
 msgstr "Quantité de bleue, axe Y (directionnel)"
 
-#: ../fix-ca.c:279
+#: ../fix-ca.c:284
 msgid "Re_d-Y"
 msgstr "Ro_uge-Y"
 
-#: ../fix-ca.c:280
+#: ../fix-ca.c:285
 msgid "Red amount, Y axis (directional)"
 msgstr "Quantité de rouge, axe Y (directionnel)"
 
-#: ../fix-ca.c:319
+#: ../fix-ca.c:324
 #, c-format
 msgid "Procedure '%s' only works with one drawable."
 msgstr "Procédure '%s' ne fonctionne qu'avec RGB ou RGBA."
 
-#: ../fix-ca.c:330
+#: ../fix-ca.c:335
 #, c-format
 msgid "Procedure '%s' only works with RGB or RGBA."
 msgstr "Procédure '%s' ne fonctionne qu'avec RGB ou RGBA."
 
-#: ../fix-ca.c:428
+#: ../fix-ca.c:433
 #, c-format
 msgid "Procedure '%s' cannot use this color precision."
 msgstr "Procédure '%s' ne peut pas utiliser cette précision de couleur."
 
-#: ../fix-ca.c:452
+#: ../fix-ca.c:457
 #, c-format
 msgid "Procedure '%s', not enough RAM."
 msgstr "Procédure '%s', pas assez de RAM."
@@ -181,90 +177,80 @@ msgstr "_Fermer"
 msgid "_OK"
 msgstr "_OK"
 
-#: ../fix-ca.c:758
+#: ../fix-ca.c:771
 #, fuzzy
-msgid "_Saturation:"
-msgstr "Sa_turation:"
+msgid "Saturation:"
+msgstr "Saturation:"
 
-#: ../fix-ca.c:762
+#: ../fix-ca.c:775
 msgid "Saturate colors in preview window to help you see overlaps"
 msgstr "Saturez les couleurs pour aider à voir les bords"
 
-#: ../fix-ca.c:774
-msgid "_None (Fastest)"
-msgstr "Aucu_n (Rapide)"
+#: ../fix-ca.c:787
+#, fuzzy
+msgid "None (Fastest)"
+msgstr "Aucun (Rapide)"
 
-#: ../fix-ca.c:775
-msgid "L_inear"
-msgstr "L_inéaire"
+#: ../fix-ca.c:788
+#, fuzzy
+msgid "Linear"
+msgstr "Linéaire"
 
-#: ../fix-ca.c:776
-msgid "_Cubic (Best)"
-msgstr "_Cubiques (Meilleur)"
+#: ../fix-ca.c:789
+#, fuzzy
+msgid "Cubic (Best)"
+msgstr "Cubiques (Meilleur)"
 
-#: ../fix-ca.c:780
+#: ../fix-ca.c:793
 msgid "Method of how to move Blue and Red Pixels"
 msgstr "Méthode de déplacement des pixels bleus et rouges"
 
-#: ../fix-ca.c:788
+#: ../fix-ca.c:801
 msgid "Lateral"
 msgstr "Latérale"
 
-#: ../fix-ca.c:790
+#: ../fix-ca.c:803
 msgid "Do corrections for lens affected chromatic aberration"
 msgstr ""
 "Effectuer des corrections pour l'aberration chromatique affectée par la "
 "lentille optique"
 
-#: ../fix-ca.c:795
-msgid "_Blue:"
-msgstr "_Bleue:"
+#: ../fix-ca.c:808 ../fix-ca.c:865 ../fix-ca.c:896
+#, fuzzy
+msgid "Blue:"
+msgstr "Bleue:"
 
-#: ../fix-ca.c:807
-msgid "_Red:"
-msgstr "_Rouge:"
-
-#: ../fix-ca.c:819
-msgid "Lens_X:"
-msgstr "Lentille_X:"
+#: ../fix-ca.c:820 ../fix-ca.c:877 ../fix-ca.c:908
+#, fuzzy
+msgid "Red:"
+msgstr "Rouge:"
 
 #: ../fix-ca.c:832
-msgid "Lens_Y:"
-msgstr "Lentille_Y:"
+#, fuzzy
+msgid "Lens X:"
+msgstr "Lentille X:"
 
 #: ../fix-ca.c:845
+#, fuzzy
+msgid "Lens Y:"
+msgstr "Lentille Y:"
+
+#: ../fix-ca.c:858
 msgid "Directional, X axis"
 msgstr "Directionnel, axe X"
 
-#: ../fix-ca.c:847
+#: ../fix-ca.c:860
 msgid "Do flat directional corrections along the X axis"
 msgstr "Effectuer des corrections sur l'axe X"
 
-#: ../fix-ca.c:852
-#, fuzzy
-msgid "B_lue:"
-msgstr "B_leue:"
-
-#: ../fix-ca.c:864
-msgid "R_ed:"
-msgstr "R_ouge:"
-
-#: ../fix-ca.c:876
+#: ../fix-ca.c:889
 msgid "Directional, Y axis"
 msgstr "Directionnel, axe Y"
 
-#: ../fix-ca.c:878
+#: ../fix-ca.c:891
 msgid "Do flat directional corrections along the Y axis"
 msgstr "Effectuer des corrections sur l'axe Y"
 
-#: ../fix-ca.c:883
-msgid "Bl_ue:"
-msgstr "Bl_eue:"
-
-#: ../fix-ca.c:895
-msgid "Re_d:"
-msgstr "Ro_uge:"
-
-#: ../fix-ca.c:1157
+#: ../fix-ca.c:1170
 msgid "Shifting pixel components..."
 msgstr "Déplacement des pixels..."
