@@ -17,7 +17,7 @@ update-scm1:
 	echo "        (theImage (car (gimp-file-load RUN-NONINTERACTIVE \"${top_srcdir}/img-fix-ca/full-branches.jpg\")))" >> ${builddir}/test-fix-ca.scm; \
 	echo "        (drawables (car (gimp-image-get-selected-drawables theImage)))" >> ${builddir}/test-fix-ca.scm; \
 	echo "        )" >> ${builddir}/test-fix-ca.scm; \
-	echo "    (plug-in-test-fix-ca RUN-NONINTERACTIVE theImage drawables 6.0 -2.4 658 1280 1 0 0 0 0)" >> ${builddir}/test-fix-ca.scm; \
+	echo "    (plug-in-test-fix-ca RUN-NONINTERACTIVE theImage drawables 6.0 -2.4 658 1280 2 0 0 0 0)" >> ${builddir}/test-fix-ca.scm; \
 	echo "    (file-bmp-export RUN-NONINTERACTIVE theImage \"${builddir}/test1.bmp\" \"\" FALSE FALSE \"rgb-888\")" >> ${builddir}/test-fix-ca.scm; \
 	echo "    (gimp-image-delete theImage)" >> ${builddir}/test-fix-ca.scm; \
 	echo "  )" >> ${builddir}/test-fix-ca.scm; \

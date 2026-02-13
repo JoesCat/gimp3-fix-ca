@@ -174,6 +174,44 @@ The picture below shows (50% zoom) corrected image of the interested region.
 
 ![](img-fix-ca/Sea_turtle-fixed.jpg)
 
+### Scanners and Directional CA
+
+Scanners used for importing images and photographs may also have some amount
+of Directional Chromatic Aberration (This came up as an interesting issue 2),
+so if you know how much, you can then correct for it when using your scanner.
+
+To determine how much shift you need to do, you will need a black and white
+sample, and the sample should have clean sharp edges. Below are two samples.
+The Left sample is a high resolution test chart printed on a laser printer
+using only black toner on high quality paper, and the right sample is a label
+on an electronic device which was silkscreened. Both samples were scanned in
+at 2400dpi.
+
+![](img-fix-ca/grids1.jpg)
+
+Below is a closer look, and you will notice you can get to about 200% zoom
+for the left laser printed sample before you notice it is not enough, but
+for the right sample, you can still zoom in 800% and get relatively clean
+edges. You will also notice the directional color shift, which looks like
+blue along the top edge, and red along the bottom edge.
+
+![](img-fix-ca/grids2.jpg)
+
+Below, we have a similar scan at 1200dpi which is uncorrected on the left,
+and better corrected on the right, with approximately blueY=+0.02 redY=-0.28.
+Due to such a small shift, we have to use Linear correction since we are only
+moving a fraction of a pixel in the Y direction. The colors may appear a
+little off color on the monitor screen, but if you sample the pixels before
+and after, you'll note they rise or drop approximately the same rates after
+correcting the directional shift. The bottom of the image shows samples
+entered into a spreadsheet where the charts make it easier to see the rise
+and fall of the separate RGB colors.
+
+![](img-fix-ca/Scanner.jpg)
+
+In summary, if I was to scan some photos on this particular scanner at 1200dpi,
+I would first preset 'linear correction' and also blueY=+0.02 and redY=-0.28.
+
 ## Download and building GIMP3-Fix-CA
 
 To compile and install this plug-in, you will need the GIMP3 RC1 version or
@@ -227,6 +265,7 @@ build files. Gimp is still in release candidate mode and bugs are getting fixed.
 ## Version History
 
 GIMP3-Fix-CA
+- 5.0 (February 12, 2026) Add scanner info resolved in issue 2. Bug fixes to work with image files larger than 2GB (on 64bit operating systems). Increase directional resolutions from 0.1 to 0.02 pixel increments. Change default from NONE to LINEAR interpolation. Set version number to 5.0 past GIMP2-Fix-CA (helps distro auto updating).
 - 0.3 (June 07, 2025) Split spinners into two rows. Problem mentioned in issue #1.
 - 0.2 (May 4, 2025) GIMP-3.0. Preview window increased from default 200x200 to 512x512 (Thanks to JamesH).
 - 0.1 (Nov 14, 2024) Ready for GIMP3-RC1 (Release Candidate 1 - Ready for larger audience, API expected to be stable).

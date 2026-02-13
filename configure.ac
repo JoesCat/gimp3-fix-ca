@@ -20,8 +20,8 @@ AC_PREREQ([2.69])
 #   fix_ca_minor_version = 0;
 #
 m4_define([fix_ca_name], [gimp3-fix-ca])
-m4_define([fix_ca_major_version], [0])
-m4_define([fix_ca_minor_version], [3])
+m4_define([fix_ca_major_version], [5])
+m4_define([fix_ca_minor_version], [0])
 m4_define([fix_ca_version],[fix_ca_major_version.fix_ca_minor_version])
 m4_define([fix_ca_package_name], [gimp3-fix-ca])
 m4_define([fix_ca_package_home], [https://github.com/JoesCat/gimp3-fix-ca])
@@ -52,8 +52,8 @@ AC_PROG_SED
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
 AC_PATH_PROG([CHMOD],[chmod],[:])
-AC_CHECK_PROGS([GIMP],[gimp-3.0],[:])
-AC_CHECK_PROGS([GIMPTOOL],[gimptool-3.0],[:])
+AC_CHECK_PROGS([GIMP],[gimp-3],[:])
+AC_CHECK_PROGS([GIMPTOOL],[gimptool-3],[:])
 AC_PATH_PROG([MD5SUM],[md5sum],[:])
 AC_PATH_PROG([MSGFMT],[msgfmt],[:])
 AC_PATH_PROG([MSGINIT],[msginit],[:])

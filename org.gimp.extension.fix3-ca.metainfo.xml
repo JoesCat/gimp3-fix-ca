@@ -44,8 +44,7 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <releases>
-   <release version="0.3"   date="2025-06-07" />
-   <release version="0.2"   date="2025-05-04" />
+   <release version="5.0"   date="2026-02-12" />
   </releases>
   <requires>
    <id version="3.0" compare="ge">org.gimp.GIMP</id>
