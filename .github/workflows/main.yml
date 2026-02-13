@@ -2,12 +2,51 @@ name: CI
 on: [push,pull_request]
 
 jobs:
+#  linux:
+# 2026feb12 no gimp3 yet until ubuntu 25.04 available
+# ubuntu-latest currently 24.04 at this point in time.
+#    runs-on: ubuntu-25.04
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        choiceL: [--disable-silent-rules, --enable-silent-rules, --enable-debugtime]
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Create configure
+#        run: |
+#          sudo apt update
+#          sudo apt-get update -y
+#          sudo apt-get install autoconf automake libtool gcc
+#          sudo apt-get install libgimp-3.0-dev
+#          autoreconf -i
+#          automake
+#      - name: Choose configure
+#        run: ./configure ${{ matrix.choiceL }}
+#      - name: Make gimp3-fix-ca
+#        run: make
+#      - name: Test make strip
+#        if: matrix.choiceL == '--disable-silent-rules'
+#        run: make strip
+#      - name: Test user-level install/uninstall
+#        if: matrix.choiceL == '--disable-silent-rules'
+#        run: |
+#          make install-user
+#          make uninstall-user
+#      - name: Test make install GIMP shared plugin
+#        if: matrix.choiceL == '--disable-silent-rules'
+#        run: |
+#          sudo make install
+#          sudo make uninstall
+#      - name: Test make check
+#        if: matrix.choiceL == '--disable-silent-rules'
+#        run: make check
   win:
     runs-on: windows-latest
     strategy:
       matrix:
         include: [
-          {msystem: MINGW64, toolchain: mingw-w64-x86_64, version: x64 },
+# 2026feb12 no gimp3 for MINGW64 yet
+#         {msystem: MINGW64, toolchain: mingw-w64-x86_64, version: x64 },
           {msystem: UCRT64, toolchain: mingw-w64-ucrt-x86_64, version: x64 },
           {msystem: CLANG64, toolchain: mingw-w64-clang-x86_64, version: x64 },
         ]
@@ -21,7 +60,7 @@ jobs:
         with:
           msystem: ${{ matrix.msystem }}
           update: true
-          install: autotools base-devel git ${{ matrix.toolchain }}-toolchain ${{ matrix.toolchain }}-gimp3 ${{ matrix.toolchain }}-gettext-tools
+          install: autotools base-devel git ${{ matrix.toolchain }}-toolchain ${{ matrix.toolchain }}-gettext-tools ${{ matrix.toolchain }}-gimp3
       - name: Create configure
         run: |
           autoreconf -i
@@ -29,4 +68,19 @@ jobs:
       - name: run ./configure
         run: ./configure
       - name: Make gimp-fix-ca
-        run: make
+        run: |
+          make
+          mkdir -p artifacts/fix-ca
+          cp fix-ca.exe artifacts/fix-ca/
+# takes a long time to run
+#      - name: Run a self-test
+#        run: make check
+      - name: Build locales
+        run: |
+          for L in es fr pt; do mkdir -p artifacts/fix-ca/locale/$L/LC_MESSAGES/; msgfmt -c -v -o artifacts/fix-ca/locale/$L/LC_MESSAGES/gimp30-fix-ca.mo po/$L.po; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fix-ca_${{ matrix.msystem }}
+          # Use wildcard to force using directory structure
+          path: |
+            artifacts/*/

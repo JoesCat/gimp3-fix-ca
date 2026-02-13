@@ -102,7 +102,7 @@ typedef struct {
   gdouble       redL;
   gdouble       lensX;
   gdouble       lensY;
-  GimpInterpolationType interpolation;
+  gint          interpolation; //GimpInterpolationType
   gdouble       blueX;
   gdouble       redX;
   gdouble       blueY;
@@ -243,7 +243,7 @@ fixca_create_procedure (GimpPlugIn *plug_in,
     gimp_procedure_set_attribution (procedure,
     /* author(s), original first */ "Kriang Lerdsuwanakij (2006..), Jose Da Silva (2022..)",
     /* copyright license         */ "GPL3+",
-    /* date for the latest build */ "2025");
+    /* date for the latest build */ "2026");
 
     gimp_procedure_add_double_argument (procedure, "bluel",
                                         _("_Blue-L"), _("Blue amount (lateral)"),
@@ -263,8 +263,8 @@ fixca_create_procedure (GimpPlugIn *plug_in,
                                         G_PARAM_READWRITE);
     gimp_procedure_add_int_argument (procedure, "interpolation",
                                      _("_Interpolation"),
-                                     _("Interpolation 0=None/1=Linear/2=Cubic"),
-                                     0, 2, 1, G_PARAM_READWRITE);
+                                     _("Interpolation 1=None/2=Linear/3=Cubic"),
+                                     INTERPOLATION_NONE, INTERPOLATION_CUBIC, INTERPOLATION_LINEAR, G_PARAM_READWRITE);
     gimp_procedure_add_double_argument (procedure, "bluex",
                                         _("B_lue-X"),
                                         _("Blue amount, X axis (directional)"),
@@ -305,7 +305,8 @@ fixca_run (GimpProcedure       *procedure,
   FixCaParams        fix_ca_params;
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   GError            *error = NULL;
-  gint               x, y, width, height, sizeImg;
+  gint               x, y, width, height;
+  gint64             sizeImg;
 
 #ifndef TEST_FIX_CA
 #ifdef HAVE_GETTEXT
@@ -374,8 +375,9 @@ fixca_run (GimpProcedure       *procedure,
     fix_ca_params.lensX = -1.0;
   if (fix_ca_params.lensY < 0.0 || fix_ca_params.lensY > fix_ca_params.Ysize-1)
     fix_ca_params.lensY = -1.0;
-  if (fix_ca_params.interpolation < 0 || fix_ca_params.interpolation > 2)
-    fix_ca_params.interpolation = 0;
+  if (fix_ca_params.interpolation < INTERPOLATION_NONE || \
+      fix_ca_params.interpolation > INTERPOLATION_CUBIC)
+    fix_ca_params.interpolation = INTERPOLATION_LINEAR;
   if (fix_ca_params.blueX < -INPUT_MAX)
     fix_ca_params.blueX = -INPUT_MAX;
   if (fix_ca_params.blueX >  INPUT_MAX)
@@ -446,7 +448,7 @@ fixca_run (GimpProcedure       *procedure,
 #endif
 
   /* prepare to draw, or preview, fetch values and image */
-  sizeImg = fix_ca_params.Xsize * fix_ca_params.Ysize * fix_ca_params.bpp;
+  sizeImg = (gint64)(fix_ca_params.Xsize * fix_ca_params.Ysize * fix_ca_params.bpp);
   fix_ca_params.srcImg  = g_new (guchar, sizeImg);
   fix_ca_params.destImg = g_new (guchar, sizeImg);
   if (fix_ca_params.srcImg == NULL || fix_ca_params.destImg == NULL) {
@@ -550,10 +552,10 @@ set_default_settings (FixCaParams *params)
   params->blueL = params->redL  = 0.0;
   params->lensX = round ((params->Xsize+0.5)/2);
   params->lensY = round ((params->Ysize+0.5)/2);
-  params->interpolation = (int)(INTERPOLATION_NONE);
+  params->interpolation = (gint)(INTERPOLATION_LINEAR);
   params->saturation = 0.0;
-  params->blueX =  params->redX  = 0.0;
-  params->blueY =  params->redY  = 0.0;
+  params->blueX = params->redX  = 0.0;
+  params->blueY = params->redY  = 0.0;
   params->reset_values = FALSE;
 }
 
@@ -577,7 +579,7 @@ get_pixel (guchar *ptr, gint bpc)
     uint64_t *p = (uint64_t *)(ptr);
     long double lret = 0.0;
     lret += *p;
-    lret /= 18446744073709551615L;
+    lret /= 18446744073709551615UL;
     ret = lret;
   } else if (bpc == -8) {
     double *p = (double *)(ptr);
@@ -606,7 +608,8 @@ set_pixel (guchar *dest, gdouble d, gint bpc)
     *p = round (d * 4294967295);
   } else if (bpc == 8) {
     uint64_t *p = (uint64_t *)(dest);
-    *p = roundl (d * 18446744073709551615L);
+    long double ld = d;
+    *p = roundl ((ld * 18446744073709551615UL));
   } else if (bpc == -8) {
     double *p = (double *)(dest);
     *p = d;
@@ -676,13 +679,13 @@ preview_update (GtkWidget *widget, GObject *config)
   b = absolute (params->bpc);
   for (i = 0; i < height; i++) {
     if (b == 1) {
-      memcpy (&buffer[width * i * params->bpp],
-              &params->destImg[(params->Xsize * (y + i) + x) * params->bpp],
+      memcpy (&buffer[(size_t)(width * i * params->bpp)],
+              &params->destImg[(size_t)((params->Xsize * (y + i) + x) * params->bpp)],
               (size_t)(width * params->bpp));
     } else {
       for (j = 0; j < width*params->bpp/b; j++) {
-        d = get_pixel (&params->destImg[(params->Xsize*(y+i)+x)*params->bpp+j*b], params->bpc);
-        set_pixel (&buffer[width*i*params->bpp/b+j], d, 1);
+        d = get_pixel (&params->destImg[(size_t)((params->Xsize*(y+i)+x)*params->bpp+j*b)], params->bpc);
+        set_pixel (&buffer[(size_t)(width*i*params->bpp/b+j)], d, 1);
       }
     }
   }
@@ -862,8 +865,8 @@ fixca_dialog (GObject             *config,
   gtk_box_pack_start (GTK_BOX (main_vboxR), frameR, FALSE, FALSE, 0);
   gtk_widget_show (frameR);
 
-  adj = gimp_scale_entry_new (_("Blue:"), params->blueX, -INPUT_MAX, INPUT_MAX, 1);
-  gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
+  adj = gimp_scale_entry_new (_("Blue:"), params->blueX, -INPUT_MAX, INPUT_MAX, 2);
+  gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.02, 0.5);
   gtk_box_pack_start (GTK_BOX (main_vboxR), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
@@ -874,8 +877,8 @@ fixca_dialog (GObject             *config,
                             G_CALLBACK(gimp_preview_invalidate),
                             preview);
 
-  adj = gimp_scale_entry_new (_("Red:"), params->redX, -INPUT_MAX, INPUT_MAX, 1);
-  gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
+  adj = gimp_scale_entry_new (_("Red:"), params->redX, -INPUT_MAX, INPUT_MAX, 2);
+  gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.02, 0.5);
   gtk_box_pack_start (GTK_BOX (main_vboxR), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
@@ -893,8 +896,8 @@ fixca_dialog (GObject             *config,
   gtk_box_pack_start (GTK_BOX (main_vboxR), frameR, FALSE, FALSE, 0);
   gtk_widget_show (frameR);
 
-  adj = gimp_scale_entry_new (_("Blue:"), params->blueY, -INPUT_MAX, INPUT_MAX, 1);
-  gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
+  adj = gimp_scale_entry_new (_("Blue:"), params->blueY, -INPUT_MAX, INPUT_MAX, 2);
+  gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.02, 0.5);
   gtk_box_pack_start (GTK_BOX (main_vboxR), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
@@ -905,8 +908,8 @@ fixca_dialog (GObject             *config,
                             G_CALLBACK(gimp_preview_invalidate),
                             preview);
 
-  adj = gimp_scale_entry_new (_("Red:"), params->redY, -INPUT_MAX, INPUT_MAX, 1);
-  gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.1, 0.5);
+  adj = gimp_scale_entry_new (_("Red:"), params->redY, -INPUT_MAX, INPUT_MAX, 2);
+  gimp_label_spin_set_increments (GIMP_LABEL_SPIN (adj), 0.02, 0.5);
   gtk_box_pack_start (GTK_BOX (main_vboxR), adj, FALSE, FALSE, 0);
   gtk_widget_show (adj);
 
@@ -969,8 +972,9 @@ load_data (gint fullWidth, gint bpp, guchar *srcPTR,
            gint src_iter[SOURCE_ROWS], gint band_adj,
            gint band_left, gint band_right, gint y, gint iter)
 {
-  gint i, l, x, diff, diff_max = -1, row_best = -1;
-  int  iter_oldest;
+  gint   i, l, diff, diff_max = -1, row_best = -1;
+  size_t x;
+  int    iter_oldest;
   for (i = 0; i < SOURCE_ROWS; ++i) {
     if (src_row[i] == y) {
       src_iter[i] = iter; /* Make sure to keep this row during this iteration */
@@ -994,10 +998,10 @@ load_data (gint fullWidth, gint bpp, guchar *srcPTR,
     }
   }
 
-  x = ((fullWidth * y) + band_left) * bpp;
+  x = (size_t)(((fullWidth * y) + band_left) * bpp);
   i = band_adj * bpp;
   l = i + (band_right-band_left+1) * bpp;
-  memcpy (&src[row_best][i], &srcPTR[x + i], (size_t)(l - i));
+  memcpy (&src[row_best][i], &srcPTR[(size_t)(x + i)], (size_t)(l - i));
   src_row[row_best] = y;
   src_iter[row_best] = iter;
   return src[row_best];
@@ -1006,10 +1010,10 @@ load_data (gint fullWidth, gint bpp, guchar *srcPTR,
 static void
 set_data (guchar *dest, FixCaParams *params, gint xstart, gint yrow, gint width)
 {
-  gint l, x;
-  x = (params->Xsize * yrow + xstart) * params->bpp;
-  l = width * params->bpp;
-  memcpy (&params->destImg[x], dest, (size_t)(l));
+  size_t l,x;
+  x = (size_t)((params->Xsize * yrow + xstart) * params->bpp);
+  l = (size_t)(width * params->bpp);
+  memcpy (&params->destImg[x], dest, l);
 }
 
 static gdouble
@@ -1268,8 +1272,8 @@ fixca_region (FixCaParams *params,
         x_blue = scale (x, x_center, orig_width, scale_blue, params->blueX);
         x_red = scale (x, x_center, orig_width, scale_red, params->redX);
 
-        memcpy (&dest[(x-x1)*bytes + 2*b], &ptr_blue[x_blue*bytes + 2*b], (size_t)(b));
-        memcpy (&dest[(x-x1)*bytes], &ptr_red[x_red*bytes], (size_t)(b));
+        memcpy (&dest[(size_t)((x-x1)*bytes + 2*b)], &ptr_blue[x_blue*bytes + 2*b], (size_t)(b));
+        memcpy (&dest[(size_t)((x-x1)*bytes)], &ptr_red[x_red*bytes], (size_t)(b));
       }
     } else if (params->interpolation == INTERPOLATION_LINEAR) {
       /* Pointer to pixel data rows y, y+1 */
@@ -1457,7 +1461,7 @@ fixca_region (FixCaParams *params,
                      x_blue_1, x_blue_2, x_blue_3, x_blue_4);
         y4 = cubicY (ptr_blue_4+2*b, bytes, bpc, d_x_blue,
                      x_blue_1, x_blue_2, x_blue_3, x_blue_4);
-        cubicX ((dest+(x-x1)*bytes+2*b), bpc, d_y_blue, y1, y2, y3, y4);
+        cubicX ((dest+(size_t)((x-x1)*bytes+2*b)), bpc, d_y_blue, y1, y2, y3, y4);
 
         y1 = cubicY (ptr_red_1, bytes, bpc, d_x_red,
                      x_red_1, x_red_2, x_red_3, x_red_4);
@@ -1467,7 +1471,7 @@ fixca_region (FixCaParams *params,
                      x_red_1, x_red_2, x_red_3, x_red_4);
         y4 = cubicY (ptr_red_4, bytes, bpc, d_x_red,
                      x_red_1, x_red_2, x_red_3, x_red_4);
-        cubicX ((dest+(x-x1)*bytes), bpc, d_y_red, y1, y2, y3, y4);
+        cubicX ((dest+(size_t)((x-x1)*bytes)), bpc, d_y_red, y1, y2, y3, y4);
       }
     }
 

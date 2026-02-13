@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/JoesCat/gimp3-fix-ca/issues\n"
-"POT-Creation-Date: 2025-06-07 22:39-0700\n"
+"POT-Creation-Date: 2026-02-12 20:33-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,7 @@ msgid "_Interpolation"
 msgstr ""
 
 #: ../fix-ca.c:266
-msgid "Interpolation 0=None/1=Linear/2=Cubic"
+msgid "Interpolation 1=None/2=Linear/3=Cubic"
 msgstr ""
 
 #: ../fix-ca.c:269
@@ -117,102 +117,102 @@ msgstr ""
 msgid "Red amount, Y axis (directional)"
 msgstr ""
 
-#: ../fix-ca.c:324
+#: ../fix-ca.c:325
 #, c-format
 msgid "Procedure '%s' only works with one drawable."
 msgstr ""
 
-#: ../fix-ca.c:335
+#: ../fix-ca.c:336
 #, c-format
 msgid "Procedure '%s' only works with RGB or RGBA."
 msgstr ""
 
-#: ../fix-ca.c:433
+#: ../fix-ca.c:435
 #, c-format
 msgid "Procedure '%s' cannot use this color precision."
 msgstr ""
 
-#: ../fix-ca.c:457
+#: ../fix-ca.c:459
 #, c-format
 msgid "Procedure '%s', not enough RAM."
 msgstr ""
 
-#: ../fix-ca.c:723
+#: ../fix-ca.c:726
 msgid "Chromatic Aberration"
 msgstr ""
 
-#: ../fix-ca.c:727
+#: ../fix-ca.c:730
 msgid "_Cancel"
 msgstr ""
 
-#: ../fix-ca.c:728
+#: ../fix-ca.c:731
 msgid "_OK"
 msgstr ""
 
-#: ../fix-ca.c:771
+#: ../fix-ca.c:774
 msgid "Saturation:"
 msgstr ""
 
-#: ../fix-ca.c:775
+#: ../fix-ca.c:778
 msgid "Saturate colors in preview window to help you see overlaps"
 msgstr ""
 
-#: ../fix-ca.c:787
+#: ../fix-ca.c:790
 msgid "None (Fastest)"
 msgstr ""
 
-#: ../fix-ca.c:788
+#: ../fix-ca.c:791
 msgid "Linear"
 msgstr ""
 
-#: ../fix-ca.c:789
+#: ../fix-ca.c:792
 msgid "Cubic (Best)"
 msgstr ""
 
-#: ../fix-ca.c:793
+#: ../fix-ca.c:796
 msgid "Method of how to move Blue and Red Pixels"
 msgstr ""
 
-#: ../fix-ca.c:801
+#: ../fix-ca.c:804
 msgid "Lateral"
 msgstr ""
 
-#: ../fix-ca.c:803
+#: ../fix-ca.c:806
 msgid "Do corrections for lens affected chromatic aberration"
 msgstr ""
 
-#: ../fix-ca.c:808 ../fix-ca.c:865 ../fix-ca.c:896
+#: ../fix-ca.c:811 ../fix-ca.c:868 ../fix-ca.c:899
 msgid "Blue:"
 msgstr ""
 
-#: ../fix-ca.c:820 ../fix-ca.c:877 ../fix-ca.c:908
+#: ../fix-ca.c:823 ../fix-ca.c:880 ../fix-ca.c:911
 msgid "Red:"
 msgstr ""
 
-#: ../fix-ca.c:832
+#: ../fix-ca.c:835
 msgid "Lens X:"
 msgstr ""
 
-#: ../fix-ca.c:845
+#: ../fix-ca.c:848
 msgid "Lens Y:"
 msgstr ""
 
-#: ../fix-ca.c:858
+#: ../fix-ca.c:861
 msgid "Directional, X axis"
 msgstr ""
 
-#: ../fix-ca.c:860
+#: ../fix-ca.c:863
 msgid "Do flat directional corrections along the X axis"
 msgstr ""
 
-#: ../fix-ca.c:889
+#: ../fix-ca.c:892
 msgid "Directional, Y axis"
 msgstr ""
 
-#: ../fix-ca.c:891
+#: ../fix-ca.c:894
 msgid "Do flat directional corrections along the Y axis"
 msgstr ""
 
-#: ../fix-ca.c:1170
+#: ../fix-ca.c:1174
 msgid "Shifting pixel components..."
 msgstr ""

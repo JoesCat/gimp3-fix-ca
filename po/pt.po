@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp-fix-ca\n"
 "Report-Msgid-Bugs-To: https://github.com/JoesCat/gimp3-fix-ca/issues\n"
-"POT-Creation-Date: 2025-06-07 22:39-0700\n"
+"POT-Creation-Date: 2026-02-12 20:33-0800\n"
 "PO-Revision-Date: 2024-02-17 17:24-0800\n"
 "Last-Translator: Jose Da Silva <digital@joescat.com>\n"
 "Language-Team: \n"
@@ -106,8 +106,9 @@ msgid "_Interpolation"
 msgstr "_Interpolação"
 
 #: ../fix-ca.c:266
-msgid "Interpolation 0=None/1=Linear/2=Cubic"
-msgstr "Interpolação 0=Nenhum/1=Linear/2=Cúbico"
+#, fuzzy
+msgid "Interpolation 1=None/2=Linear/3=Cubic"
+msgstr "Interpolação 1=Nenhum/2=Linear/3=Cúbico"
 
 #: ../fix-ca.c:269
 msgid "B_lue-X"
@@ -141,110 +142,110 @@ msgstr "Ve_rmelho-Y"
 msgid "Red amount, Y axis (directional)"
 msgstr "Quantidade de vermelho, eixo Y (direcional)"
 
-#: ../fix-ca.c:324
+#: ../fix-ca.c:325
 #, c-format
 msgid "Procedure '%s' only works with one drawable."
 msgstr "Procedimento '%s' só funciona com um drawable."
 
-#: ../fix-ca.c:335
+#: ../fix-ca.c:336
 #, c-format
 msgid "Procedure '%s' only works with RGB or RGBA."
 msgstr "Procedimento '%s' só funciona com RGB ou RGBA."
 
-#: ../fix-ca.c:433
+#: ../fix-ca.c:435
 #, c-format
 msgid "Procedure '%s' cannot use this color precision."
 msgstr "Procedimento '%s' não pode usar esta precisão de cor."
 
-#: ../fix-ca.c:457
+#: ../fix-ca.c:459
 #, c-format
 msgid "Procedure '%s', not enough RAM."
 msgstr "Procedimento '%s', RAM insuficiente."
 
-#: ../fix-ca.c:723
+#: ../fix-ca.c:726
 msgid "Chromatic Aberration"
 msgstr "Aberração Cromática"
 
-#: ../fix-ca.c:727
+#: ../fix-ca.c:730
 msgid "_Cancel"
 msgstr "_Fechar"
 
-#: ../fix-ca.c:728
+#: ../fix-ca.c:731
 msgid "_OK"
 msgstr "_OK"
 
-#: ../fix-ca.c:771
+#: ../fix-ca.c:774
 #, fuzzy
 msgid "Saturation:"
 msgstr "Saturação:"
 
-#: ../fix-ca.c:775
+#: ../fix-ca.c:778
 msgid "Saturate colors in preview window to help you see overlaps"
 msgstr "Sature as cores para ajudá-lo a ver as bordas"
 
-#: ../fix-ca.c:787
+#: ../fix-ca.c:790
 #, fuzzy
 msgid "None (Fastest)"
 msgstr "Nenhum (Rápido)"
 
-#: ../fix-ca.c:788
+#: ../fix-ca.c:791
 #, fuzzy
 msgid "Linear"
 msgstr "Linear"
 
-#: ../fix-ca.c:789
+#: ../fix-ca.c:792
 #, fuzzy
 msgid "Cubic (Best)"
 msgstr "Cúbico (Melhor)"
 
-#: ../fix-ca.c:793
+#: ../fix-ca.c:796
 msgid "Method of how to move Blue and Red Pixels"
 msgstr "Método de mover pixels azuis e vermelhos"
 
-#: ../fix-ca.c:801
+#: ../fix-ca.c:804
 msgid "Lateral"
 msgstr "Lateral"
 
-#: ../fix-ca.c:803
+#: ../fix-ca.c:806
 msgid "Do corrections for lens affected chromatic aberration"
 msgstr "Faça correções para a aberração cromática afetada pela lente"
 
-#: ../fix-ca.c:808 ../fix-ca.c:865 ../fix-ca.c:896
+#: ../fix-ca.c:811 ../fix-ca.c:868 ../fix-ca.c:899
 #, fuzzy
 msgid "Blue:"
 msgstr "Azul:"
 
-#: ../fix-ca.c:820 ../fix-ca.c:877 ../fix-ca.c:908
+#: ../fix-ca.c:823 ../fix-ca.c:880 ../fix-ca.c:911
 #, fuzzy
 msgid "Red:"
 msgstr "Vermelho:"
 
-#: ../fix-ca.c:832
+#: ../fix-ca.c:835
 #, fuzzy
 msgid "Lens X:"
 msgstr "Lente X:"
 
-#: ../fix-ca.c:845
+#: ../fix-ca.c:848
 #, fuzzy
 msgid "Lens Y:"
 msgstr "Lente Y:"
 
-#: ../fix-ca.c:858
+#: ../fix-ca.c:861
 msgid "Directional, X axis"
 msgstr "Direcional, eixo X"
 
-#: ../fix-ca.c:860
+#: ../fix-ca.c:863
 msgid "Do flat directional corrections along the X axis"
 msgstr "Faça correções direcionais no eixo X"
 
-#: ../fix-ca.c:889
+#: ../fix-ca.c:892
 msgid "Directional, Y axis"
 msgstr "Direcional, eixo Y"
 
-#: ../fix-ca.c:891
+#: ../fix-ca.c:894
 msgid "Do flat directional corrections along the Y axis"
 msgstr "Faça correções direcionais no eixo Y"
 
-#: ../fix-ca.c:1170
+#: ../fix-ca.c:1174
 msgid "Shifting pixel components..."
 msgstr "Mudando pixels de cor..."
